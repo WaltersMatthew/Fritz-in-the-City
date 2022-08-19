@@ -38,7 +38,8 @@ After a long day chasing squirrels, Fritz is lost in the city, and far from his 
 ---
 # Potential Roadblocks
 
-    - Jump function
+    - Allow multiple key inputs simultaneously
+    - Jump function ✔️
     - Implementing gravity
     - Figuring out scroll functionality
     - Updating from a single rectangle to sprites for movement

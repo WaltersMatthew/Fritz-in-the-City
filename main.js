@@ -1,7 +1,7 @@
 //const to select items
 const canvas = document.querySelector('canvas')
 const statusDisplay = document.querySelector("#status")
-const button = document.querySelector('button')
+// const button = document.querySelector('button')
 //get canvas context
 const ctx = canvas.getContext('2d')
 //set canvas res to be same as window
@@ -19,33 +19,44 @@ class Fritz{
         this.height = height
         this.color = color
         this.alive = true
+        this.speed = 10
+        this.speedX = 0
+        this.speedY = 0
+        this.gravity = 5.05
+        this.gravitySpeed = 0
     }
-    render() {
+    render(){
+        ctx.lineWidth = 5
+        ctx.strokeStyle = 'black'
+        ctx.strokeRect(this.x, this.y, this.width, this.height)
         ctx.fillStyle = this.color
         ctx.fillRect(this.x, this.y, this.width, this.height)
     }
+    gravFunc() {
+        this.gravitySpeed += this.gravity;
+        this.y += this.speedY + this.gravitySpeed;
+        // this.hitBottom();
+    }
 }
-
 //create Fritz on click
 
-const fritz = new Fritz(50, 200, 70, 35, '#AD5E32')
+let fritz = new Fritz(50, 200, 30, 15, '#AD5E32')
 
 
 //create movementHandler function
-function movementHandler(e){
-    let speed = 10 
+function movementHandler(e){ 
     // how many pixels fritz moves
     if(fritz.alive){
         switch(e.key){
             case('w'):
                 //move fritz up
                 pressed = true
-                fritz.y -= speed
+                fritz.y -= fritz.speed
                 break
             case('s'):
                 //move fritz down
                 pressed = true
-                fritz.y += speed
+                fritz.y += fritz.speed
                 if(fritz.y > canvas.height){
                     endGame()
                 }
@@ -53,7 +64,7 @@ function movementHandler(e){
             case('a'):
                 //move fritz left
                 pressed = true
-                fritz.x -= speed
+                fritz.x -= fritz.speed
                 if(fritz.x < 0){
                     fritz.x = 0
                 }
@@ -61,7 +72,7 @@ function movementHandler(e){
             case('d'):
                 // move fritz right
                 pressed = true
-                fritz.x += speed
+                fritz.x += fritz.speed
                 if(fritz.x + fritz.width > canvas.width){
                     fritz.x = canvas.width - fritz.width
                 }
@@ -69,16 +80,15 @@ function movementHandler(e){
             case(' '):
                 // make fritz jump
                 pressed = true
-                fritz.y -= speed * 10
+                fritz.y -= fritz.speed * 5
                 console.log("jump doggy!")
+                break
         }
-            
+               
     }
 
 }
-
-
-
+fritz.gravFunc() 
 //pass movementHandler to keypress eventListner
 document.addEventListener('keydown', movementHandler)
 //add collision to stop fritz from falling when on platform
@@ -86,9 +96,10 @@ document.addEventListener('keydown', movementHandler)
 //respawn function
 function respawn(){
     ctx.clearRect(0,0, canvas.width, canvas.height)
-    Fritz.render()
+    fritz = new Fritz(50, 200, 30, 15, '#AD5E32')
 }
-
+//respawn button
+// button.addEventListener('click', respawn)
 //endgame function
 function endGame(){
     fritz.alive = false
