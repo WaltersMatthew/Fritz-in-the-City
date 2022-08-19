@@ -40,7 +40,7 @@ class Fritz{
 }
 //create Fritz on click
 
-let fritz = new Fritz(50, 200, 30, 15, '#AD5E32')
+let fritz = new Fritz(25, 330, 30, 15, '#AD5E32')
 
 
 //create movementHandler function
@@ -80,7 +80,7 @@ function movementHandler(e){
             case(' '):
                 // make fritz jump
                 pressed = true
-                fritz.y -= fritz.speed * 5
+                fritz.y -= fritz.speed * 6
                 console.log("jump doggy!")
                 break
         }
@@ -113,51 +113,43 @@ function drawScene(){
     //bldg 1
     ctx.lineWidth = 5
     ctx.strokeStyle = '#FFFC40'
-    ctx.strokeRect(0, 220, 100, canvas.height)
-    ctx.strokeStyle = '#143362' 
-    ctx.fillRect(0, 220, 100, canvas.height) 
+    ctx.strokeRect(0, 350, 100, canvas.height)
+    ctx.fillStyle = '#143362' 
+    ctx.fillRect(0, 350, 100, canvas.height) 
     //platform 1
-    ctx.lineWidth = 5
-    ctx.strokeStyle = '#FFFC40'
-    ctx.strokeRect(150, 180, 50, 25)
-    ctx.strokeStyle = '#143362' 
-    ctx.fillRect(150, 180, 50, 25)
+    ctx.strokeRect(130, 290, 50, 13) 
+    ctx.fillRect(130, 290, 50, 13)
     //platform 2
-    ctx.lineWidth = 5
-    ctx.strokeStyle = '#FFFC40'
-    ctx.strokeRect(250, 140, 75, 25)
-    ctx.strokeStyle = '#143362' 
-    ctx.fillRect(250, 140, 75, 25)
+    ctx.strokeRect(325, 250, 75, 25) 
+    ctx.fillRect(325, 250, 75, 25)
     //bldg 2
-    ctx.lineWidth = 5
-    ctx.strokeStyle = '#FFFC40'
-    ctx.strokeRect(200, 230, 75, canvas.height)
-    ctx.strokeStyle = '#143362' 
+    ctx.strokeRect(200, 230, 75, canvas.height) 
     ctx.fillRect(200, 230, 75, canvas.height)
     //bldg 3
-    ctx.lineWidth = 5
-    ctx.strokeStyle = '#FFFC40'
-    ctx.strokeRect(420, 300, 100, canvas.height)
-    ctx.strokeStyle = '#143362' 
+    ctx.strokeRect(420, 300, 100, canvas.height) 
     ctx.fillRect(420, 300, 100, canvas.height)   
     //platform 3
-    ctx.lineWidth = 5
-    ctx.strokeStyle = '#FFFC40'
-    ctx.strokeRect(550, 260, 75, 12)
-    ctx.strokeStyle = '#143362' 
+    ctx.strokeRect(550, 260, 75, 12) 
     ctx.fillRect(550, 260, 75, 12)   
     //platform 4
-    ctx.lineWidth = 5
-    ctx.strokeStyle = '#FFFC40'
-    ctx.strokeRect(650, 220, 25, 12)
-    ctx.strokeStyle = '#143362' 
+    ctx.strokeRect(650, 220, 25, 12) 
     ctx.fillRect(650, 220, 25, 12)  
     //bldg 4
-    ctx.lineWidth = 5
-    ctx.strokeStyle = '#FFFC40'
-    ctx.strokeRect(700, 180, canvas.width, canvas.height)
-    ctx.strokeStyle = '#143362' 
-    ctx.fillRect(700, 180, canvas.width, canvas.height)    
+    ctx.strokeRect(700, 180, canvas.width, canvas.height) 
+    ctx.fillRect(700, 180, canvas.width, canvas.height)
+    //house
+    ctx.lineWidth = 2
+    ctx.fillStyle = '#FFFC40'
+    ctx.strokeStyle = 'black' 
+    ctx.strokeRect(745, 147, 40, 30)
+    ctx.fillRect(745, 147, 40, 30)
+    ctx.beginPath();
+    ctx.moveTo(765, 120);
+    ctx.lineTo(740, 145);
+    ctx.lineTo(790, 145);
+    ctx.fill();
+    ctx.stroke()
+        
 }
 
 //gameplay loop
