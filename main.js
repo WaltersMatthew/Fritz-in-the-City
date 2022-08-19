@@ -108,6 +108,57 @@ function endGame(){
     respawn()
     
 }
+//render buildings
+function drawScene(){
+    //bldg 1
+    ctx.lineWidth = 5
+    ctx.strokeStyle = '#FFFC40'
+    ctx.strokeRect(0, 220, 100, canvas.height)
+    ctx.strokeStyle = '#143362' 
+    ctx.fillRect(0, 220, 100, canvas.height) 
+    //platform 1
+    ctx.lineWidth = 5
+    ctx.strokeStyle = '#FFFC40'
+    ctx.strokeRect(150, 180, 50, 25)
+    ctx.strokeStyle = '#143362' 
+    ctx.fillRect(150, 180, 50, 25)
+    //platform 2
+    ctx.lineWidth = 5
+    ctx.strokeStyle = '#FFFC40'
+    ctx.strokeRect(250, 140, 75, 25)
+    ctx.strokeStyle = '#143362' 
+    ctx.fillRect(250, 140, 75, 25)
+    //bldg 2
+    ctx.lineWidth = 5
+    ctx.strokeStyle = '#FFFC40'
+    ctx.strokeRect(200, 230, 75, canvas.height)
+    ctx.strokeStyle = '#143362' 
+    ctx.fillRect(200, 230, 75, canvas.height)
+    //bldg 3
+    ctx.lineWidth = 5
+    ctx.strokeStyle = '#FFFC40'
+    ctx.strokeRect(420, 300, 100, canvas.height)
+    ctx.strokeStyle = '#143362' 
+    ctx.fillRect(420, 300, 100, canvas.height)   
+    //platform 3
+    ctx.lineWidth = 5
+    ctx.strokeStyle = '#FFFC40'
+    ctx.strokeRect(550, 260, 75, 12)
+    ctx.strokeStyle = '#143362' 
+    ctx.fillRect(550, 260, 75, 12)   
+    //platform 4
+    ctx.lineWidth = 5
+    ctx.strokeStyle = '#FFFC40'
+    ctx.strokeRect(650, 220, 25, 12)
+    ctx.strokeStyle = '#143362' 
+    ctx.fillRect(650, 220, 25, 12)  
+    //bldg 4
+    ctx.lineWidth = 5
+    ctx.strokeStyle = '#FFFC40'
+    ctx.strokeRect(700, 180, canvas.width, canvas.height)
+    ctx.strokeStyle = '#143362' 
+    ctx.fillRect(700, 180, canvas.width, canvas.height)    
+}
 
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60)
@@ -115,7 +166,12 @@ const gameLoopInterval = setInterval(gameLoop, 60)
 function gameLoop() {
     //redraw canvas
     ctx.clearRect(0,0, canvas.width, canvas.height)
+    drawScene()
     //render fritz
     fritz.render()
 }
 gameLoop()
+
+canvas.addEventListener('click', (event) => {
+    console.log(event.offsetX, event.offsetY)
+})

@@ -14,7 +14,7 @@ canvas {
 
 #container {
     max-width: 50em;
-    background-color: rgb(111,12,32);
+    background-color: #143362;
     margin: 0 auto;
     padding: 1em;
     display: grid;
@@ -30,7 +30,7 @@ canvas {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #222;
+    background-color: #122020;
 }
 
 #top{
