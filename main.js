@@ -17,186 +17,203 @@ const blue = "#143362";
 
 //make class for Fritz
 class Fritz {
-  constructor(x, y, width, height, color) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-    this.color = color;
-    this.alive = true;
-    this.speed = 10;
-    this.speedX = 0;
-    this.speedY = 0;
-    this.gravity = 5.05;
-    this.gravitySpeed = 0;
-  }
-  render() {
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = "black";
-    ctx.strokeRect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-  }
-  gravFunc() {
-    this.gravitySpeed += this.gravity;
-    this.y += this.speedY + this.gravitySpeed;
-  }
+    constructor(x, y, width, height, color) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.color = color;
+        this.alive = true;
+        this.speed = 10;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.gravity = 5.05;
+        this.gravitySpeed = 0;
+    }
+    render() {
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+    gravFunc() {
+        this.gravitySpeed += this.gravity;
+        this.y += this.speedY + this.gravitySpeed;
+    }
+}
+
+class Platform {
+    constructor(x, y, width, height, borderColor, fillColor){
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.borderColor = borderColor;
+        this.fillColor = fillColor;
+    }    
+    // makeBuilding(x, y, width, height) 
+    makeBuilding(){
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = yellow;
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = blue;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = yellow;
+        //windows
+        ctx.fillRect(this.x + 5, this.y + 5, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 25, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 45, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 65, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 105, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 125, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 165, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 285, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 305, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 345, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 325, this.width - 10, 10);
+        ctx.fillRect(this.x + 5, this.y + 345, this.width - 10, 10);
+    }
+    makePlat() {
+        ctx.strokeStyle = this.borderColor;
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = this.fillColor;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
 }
 
 let fritz = new Fritz(25, 330, 30, 15, "#AD5E32");
+let building1 = new Platform(0, 350, 100, canvas.height, yellow, blue)
+let building2 = new Platform(200, 230, 75, canvas.height)
+let building3 = new Platform(420, 300, 100, canvas.height)
+let building4 = new Platform(700, 180, canvas.width, canvas.height)
+let plat1 = new Platform(130, 290, 50, 13, yellow, blue)
+let plat2 = new Platform(325, 250, 75, 15, yellow, blue)
+let plat3 = new Platform(550, 260, 75, 12, yellow, blue)
+let plat4 = new Platform(650, 220, 25, 12, yellow, blue)
+
+
 
 //create movementHandler function
 function movementHandler(e) {
-  // how many pixels fritz moves
-  if (fritz.alive) {
-    switch (e.key) {
-      case "w":
-        //move fritz up
-        pressed = true;
-        fritz.y -= fritz.speed;
-        break;
-      case "s":
-        //move fritz down
-        pressed = true;
-        fritz.y += fritz.speed;
-        if (fritz.y > canvas.height) {
-          endGame();
+    // how many pixels fritz moves
+    if (fritz.alive) {
+        switch (e.key) {
+            case "w":
+                //move fritz up
+                pressed = true;
+                fritz.y -= fritz.speed;
+                break;
+            case "s":
+                //move fritz down
+                pressed = true;
+                fritz.y += fritz.speed;
+                if (fritz.y > canvas.height) {
+                    endGame();
+                }
+                break;
+            case "a":
+                //move fritz left
+                pressed = true;
+                fritz.x -= fritz.speed;
+                if (fritz.x < 0) {
+                    fritz.x = 0;
+                }
+                break;
+            case "d":
+                // move fritz right
+                pressed = true;
+                fritz.x += fritz.speed;
+                if (fritz.x + fritz.width > canvas.width) {
+                    winner();
+                }
+                break;
+            case " ":
+                // make fritz jump
+                pressed = true;
+                fritz.y -= fritz.speed * 6;
+                console.log("jump doggy!");
+                break;
         }
-        break;
-      case "a":
-        //move fritz left
-        pressed = true;
-        fritz.x -= fritz.speed;
-        if (fritz.x < 0) {
-          fritz.x = 0;
-        }
-        break;
-      case "d":
-        // move fritz right
-        pressed = true;
-        fritz.x += fritz.speed;
-        if (fritz.x + fritz.width > canvas.width) {
-          winner();
-        }
-        break;
-      case " ":
-        // make fritz jump
-        pressed = true;
-        fritz.y -= fritz.speed * 6;
-        console.log("jump doggy!");
-        break;
     }
-  }
 }
 fritz.gravFunc();
 //pass movementHandler to keypress eventListner
 document.addEventListener("keydown", movementHandler);
 
-//add collision to stop fritz from falling when on platform
-// function onPlat(fritz, plat) {
-//   if (fritz.y + fritz.height <= plat.y) {
-//     fritz.y = plat.y;
-//   }
-// }
 
 //respawn function
 function respawn() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  fritz = new Fritz(25, 330, 30, 15, "#AD5E32");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    fritz = new Fritz(25, 330, 30, 15, "#AD5E32");
 }
 //respawn button
 // button.addEventListener('click', respawn)
 //endgame function
 function endGame() {
-  fritz.alive = false;
-  statusDisplay.innerText = "Oh no! Try again to get Fritz home.";
-  console.log(":(");
-  respawn();
+    fritz.alive = false;
+    statusDisplay.innerText = "Oh no! Try again to get Fritz home.";
+    console.log(":(");
+    respawn();
 }
 
 function winner() {
-  fritz.alive = false;
-  statusDisplay.innerText = "YOU MADE IT! Time to curl up on the couch!";
-  console.log(":)");
+    fritz.alive = false;
+    statusDisplay.innerText = "YOU MADE IT! Time to curl up on the couch!";
+    console.log(":)");
 }
-//function to create buildings
-function makeBulding(x, y, width, height) {
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = yellow;
-  ctx.strokeRect(x, y, width, height);
-  ctx.fillStyle = blue;
-  ctx.fillRect(x, y, width, height);
-  ctx.fillStyle = yellow;
-  //windows
-  ctx.fillRect(x + 5, y + 5, width - 10, 10);
-  ctx.fillRect(x + 5, y + 25, width - 10, 10);
-  ctx.fillRect(x + 5, y + 45, width - 10, 10);
-  ctx.fillRect(x + 5, y + 65, width - 10, 10);
-  ctx.fillRect(x + 5, y + 105, width - 10, 10);
-  ctx.fillRect(x + 5, y + 125, width - 10, 10);
-  ctx.fillRect(x + 5, y + 165, width - 10, 10);
-  ctx.fillRect(x + 5, y + 285, width - 10, 10);
-  ctx.fillRect(x + 5, y + 305, width - 10, 10);
-  ctx.fillRect(x + 5, y + 345, width - 10, 10);
-  ctx.fillRect(x + 5, y + 325, width - 10, 10);
-  ctx.fillRect(x + 5, y + 345, width - 10, 10);
+function house(){
+    ctx.lineWidth = 2;
+    ctx.fillStyle = yellow;
+    ctx.strokeStyle = "black";
+    ctx.strokeRect(752, 125, 50, 52);
+    ctx.fillRect(752, 125, 50, 52);
+    ctx.beginPath();
+    ctx.moveTo(775, 100);
+    ctx.lineTo(740, 125);
+    ctx.lineTo(800, 125);
+    ctx.lineTo(810, 100)
+    ctx.fill();
+    ctx.stroke();
+    ctx.strokeStyle = "black";
+    ctx.strokeRect(782, 140, 22, 37);
+    ctx.beginPath();
+    ctx.arc(786, 160, 2, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.fillStyle = "hotpink";
+    ctx.beginPath();
+    ctx.arc(770, 173, 5, 0, 2 * Math.PI);
+    ctx.fill();
 }
-//function for platforms
-function makePlat(x, y, width, height, outlineColor, fillColor) {
-  ctx.strokeStyle = outlineColor;
-  ctx.strokeRect(x, y, width, height);
-  ctx.fillStyle = fillColor;
-  ctx.fillRect(x, y, width, height);
+
+//add collision to stop fritz from falling when on platform
+function onPlat(fritz, plat) {
+    if (fritz.y + fritz.height <= plat.y)
+    console.log("through the platform") 
 }
-//render buildings
-function drawScene() {
-  //bldg 1
-  makeBulding(0, 350, 100, canvas.height);
-  //platform 1
-  makePlat(130, 290, 50, 13, blue, yellow);
-  //bldg 2
-  makeBulding(200, 230, 75, canvas.height);
-  //platform 2
-  makePlat(325, 250, 75, 15, blue, yellow);
-  //bldg 3
-  makeBulding(420, 300, 100, canvas.height);
-  //platform 3
-  makePlat(550, 260, 75, 12, blue, yellow);
-  //platform 4
-  makePlat(650, 220, 25, 12, blue, yellow);
-  //bldg 4
-  makeBulding(700, 180, canvas.width, canvas.height);
-  // house
-  ctx.lineWidth = 2;
-  ctx.fillStyle = yellow;
-  ctx.strokeStyle = "black";
-  ctx.strokeRect(765, 147, 40, 30);
-  ctx.fillRect(765, 147, 40, 30);
-  ctx.beginPath();
-  ctx.moveTo(785, 120);
-  ctx.lineTo(760, 145);
-  ctx.lineTo(810, 145);
-  ctx.fill();
-  ctx.stroke();
-  ctx.strokeStyle = "black";
-  ctx.strokeRect(782, 160, 12, 17);
-  ctx.beginPath();
-  ctx.arc(790, 170, 2, 0, 2 * Math.PI);
-  ctx.stroke();
-}
+// onPlat(fritz, platform)
 
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60);
 
 function gameLoop() {
-  //redraw canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //collision check
-  //   onPlat(fritz);
-  //draw buildings
-  drawScene();
-  //render fritz
-  fritz.render();
+    //redraw canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    //collision check
+    //   onPlat(fritz);
+    //draw buildings
+    // drawScene();
+    //render fritz
+    fritz.render();
+    building1.makeBuilding()
+    building2.makeBuilding()
+    building3.makeBuilding()
+    building4.makeBuilding()
+    plat1.makePlat()
+    plat2.makePlat()
+    plat3.makePlat()
+    plat4.makePlat()
+    house()
 }
 gameLoop();
 
