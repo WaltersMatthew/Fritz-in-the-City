@@ -1,16 +1,17 @@
 //const to select items
 const canvas = document.querySelector("canvas");
 const statusDisplay = document.querySelector("#status");
-
-//color palette
-const yellow = "#FFFC40";
-const blue = "#143362";
-// const button = document.querySelector('button')
 //get canvas context
 const ctx = canvas.getContext("2d");
 //set canvas res to be same as window
 canvas.setAttribute("height", getComputedStyle(canvas)["height"]);
 canvas.setAttribute("width", getComputedStyle(canvas)["width"]);
+
+//color palette
+const yellow = "#FFFC40";
+const blue = "#143362";
+
+// const button = document.querySelector('button')
 
 //rectangles for buildings
 
@@ -75,7 +76,7 @@ function movementHandler(e) {
         pressed = true;
         fritz.x += fritz.speed;
         if (fritz.x + fritz.width > canvas.width) {
-          fritz.x = canvas.width - fritz.width;
+          winner();
         }
         break;
       case " ":
@@ -92,11 +93,11 @@ fritz.gravFunc();
 document.addEventListener("keydown", movementHandler);
 
 //add collision to stop fritz from falling when on platform
-function onPlat(fritz, plat) {
-  if (fritz.y + fritz.height <= plat.y) {
-    fritz.y = plat.y;
-  }
-}
+// function onPlat(fritz, plat) {
+//   if (fritz.y + fritz.height <= plat.y) {
+//     fritz.y = plat.y;
+//   }
+// }
 
 //respawn function
 function respawn() {
@@ -111,6 +112,12 @@ function endGame() {
   statusDisplay.innerText = "Oh no! Try again to get Fritz home.";
   console.log(":(");
   respawn();
+}
+
+function winner() {
+  fritz.alive = false;
+  statusDisplay.innerText = "YOU MADE IT! Time to curl up on the couch!";
+  console.log(":)");
 }
 //function to create buildings
 function makeBulding(x, y, width, height) {
@@ -161,15 +168,20 @@ function drawScene() {
   makeBulding(700, 180, canvas.width, canvas.height);
   // house
   ctx.lineWidth = 2;
-  ctx.fillStyle = "#FFFC40";
+  ctx.fillStyle = yellow;
   ctx.strokeStyle = "black";
-  ctx.strokeRect(745, 147, 40, 30);
-  ctx.fillRect(745, 147, 40, 30);
+  ctx.strokeRect(765, 147, 40, 30);
+  ctx.fillRect(765, 147, 40, 30);
   ctx.beginPath();
-  ctx.moveTo(765, 120);
-  ctx.lineTo(740, 145);
-  ctx.lineTo(790, 145);
+  ctx.moveTo(785, 120);
+  ctx.lineTo(760, 145);
+  ctx.lineTo(810, 145);
   ctx.fill();
+  ctx.stroke();
+  ctx.strokeStyle = "black";
+  ctx.strokeRect(782, 160, 12, 17);
+  ctx.beginPath();
+  ctx.arc(790, 170, 2, 0, 2 * Math.PI);
   ctx.stroke();
 }
 
@@ -180,7 +192,7 @@ function gameLoop() {
   //redraw canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   //collision check
-  onPlat(fritz);
+  //   onPlat(fritz);
   //draw buildings
   drawScene();
   //render fritz
@@ -188,6 +200,7 @@ function gameLoop() {
 }
 gameLoop();
 
-canvas.addEventListener("click", (event) => {
-  console.log(event.offsetX, event.offsetY);
-});
+//find X/Y of click for formatting
+// canvas.addEventListener("click", (event) => {
+//   console.log(event.offsetX, event.offsetY);
+// });
