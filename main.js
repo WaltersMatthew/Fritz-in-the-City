@@ -40,8 +40,8 @@ function movementHandler(e){
             case('s'):
                 //move fritz down
                 fritz.y += speed
-                if(fritz.y + fritz.height > canvas.height){
-                    fritz.alive = false
+                if(fritz.y > canvas.height){
+                    endGame()
                 }
                 break
             case('a'):
@@ -75,6 +75,7 @@ document.addEventListener('keypress', movementHandler)
 function endGame(){
     fritz.alive = false
     statusDisplay.innerText = "Oh no! Try again to get Fritz home."
+    console.log(":(")
 }
 
 //gameplay loop
@@ -82,7 +83,7 @@ const gameLoopInterval = setInterval(gameLoop, 60)
 
 function gameLoop() {
     //redraw canvas
-    // ctx.clearRect(0,0, canvas.width, canvas.height)
+    ctx.clearRect(0,0, canvas.width, canvas.height)
     //render fritz
     fritz.render()
 }

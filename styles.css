@@ -19,30 +19,25 @@ canvas {
     grid-gap: 1em;
     grid-template-rows: .25fr .5fr .25fr;
     grid-template-columns: .25fr .5fr .25fr;
-    grid-template-areas:"top-left top-left top-right"
+    grid-template-areas:"top top top"
                         "game game game"
                         "btm-left btm-right btm-right";
 }
 
-#top-left, #top-right, #btm-left, #btm-right {
+#top, #btm-left, #btm-right {
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #222;
 }
 
-#top-left {
-grid-area: top-left;
-}
-
-#top-right {
-    grid-area: top-right;
+#top{
+    grid-area: top;
 }
 
 main {
     grid-area: game;
 }
-
 
 #btm-left {
     grid-area: btm-left;
