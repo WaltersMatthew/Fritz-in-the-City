@@ -5,7 +5,14 @@
 After a long day chasing squirrels, Fritz is lost in the city, and far from his cozy yellow home. Help him get back into bed by running and jumping your way through the city until you spot his little slice of heaven. Watch out for the gaps between buildings, you know doxies are afraid of heights!
 
 ---
+# Tech Stack
 
+    - HTML
+    - CSS
+    - Javascript
+    - Canvas 2D API
+
+---
 # Fritz in the city wireframe
 
 ![Fritz wireframe](./img/Fritz-Wireframe-photo.png)
