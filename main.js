@@ -27,7 +27,7 @@ class Fritz {
         this.speed = 10;
         this.speedX = 0;
         this.speedY = 0;
-        this.gravity = 5.05;
+        this.gravity = 0.05;
         this.gravitySpeed = 0;
     }
     render() {
@@ -82,7 +82,7 @@ class Platform {
     }
 }
 
-let fritz = new Fritz(25, 330, 30, 15, "#AD5E32");
+let fritz = new Fritz(25, 20, 30, 15, "#AD5E32");
 let building1 = new Platform(0, 350, 100, canvas.height, yellow, blue)
 let building2 = new Platform(200, 230, 75, canvas.height)
 let building3 = new Platform(420, 300, 100, canvas.height)
@@ -97,7 +97,7 @@ let plat4 = new Platform(650, 220, 25, 12, yellow, blue)
 //create movementHandler function
 function movementHandler(e) {
     // how many pixels fritz moves
-    if (fritz.alive) {
+    if (fritz.alive ) {
         switch (e.key) {
             case "w":
                 //move fritz up
@@ -137,7 +137,7 @@ function movementHandler(e) {
         }
     }
 }
-fritz.gravFunc();
+
 //pass movementHandler to keypress eventListner
 document.addEventListener("keydown", movementHandler);
 
@@ -163,33 +163,58 @@ function winner() {
     console.log(":)");
 }
 function house(){
+    //main square
     ctx.lineWidth = 2;
     ctx.fillStyle = yellow;
     ctx.strokeStyle = "black";
     ctx.strokeRect(752, 125, 50, 52);
     ctx.fillRect(752, 125, 50, 52);
+    //roof
+    ctx.fillStyle = "#D0693E"
     ctx.beginPath();
     ctx.moveTo(775, 100);
     ctx.lineTo(740, 125);
     ctx.lineTo(800, 125);
     ctx.lineTo(810, 100)
+    //roof styling
     ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(785, 100);
+    ctx.lineTo(750, 125);
+    ctx.stroke()
+    ctx.beginPath();
+    ctx.moveTo(800, 100);
+    ctx.lineTo(765, 125);
+    ctx.stroke()
+    ctx.beginPath();
+    ctx.moveTo(815, 100);
+    ctx.lineTo(780, 125);
     ctx.stroke();
+    //door
     ctx.strokeStyle = "black";
     ctx.strokeRect(782, 140, 22, 37);
+    ctx.fillStyle = "white";
+    ctx.fillRect(782, 140, 22, 37)
+    //doorknob
     ctx.beginPath();
     ctx.arc(786, 160, 2, 0, 2 * Math.PI);
     ctx.stroke();
+    //ball
     ctx.fillStyle = "hotpink";
     ctx.beginPath();
-    ctx.arc(770, 173, 5, 0, 2 * Math.PI);
+    ctx.arc(770, 171, 6, 0, 2 * Math.PI);
     ctx.fill();
 }
 
 //add collision to stop fritz from falling when on platform
-function onPlat(fritz, plat) {
-    if (fritz.y + fritz.height <= plat.y)
-    console.log("through the platform") 
+function platform1check(fritz, plat) {
+    if (fritz.y + fritz.height >= plat.y){
+        fritz.y == fritz.height + plat.y
+        console.log("through the platform") 
+    }else{
+        console.log("good")
+    }
+    
 }
 // onPlat(fritz, platform)
 
@@ -201,9 +226,7 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     //collision check
     //   onPlat(fritz);
-    //draw buildings
-    // drawScene();
-    //render fritz
+    //render fritz and all platforms
     fritz.render();
     building1.makeBuilding()
     building2.makeBuilding()
@@ -214,9 +237,13 @@ function gameLoop() {
     plat3.makePlat()
     plat4.makePlat()
     house()
+    //platform collision checks
+    platform1check(fritz, building1)
+    // fritz.gravFunc();
 }
 gameLoop();
-
+console.log(building1)
+console.log(fritz.y)
 //find X/Y of click for formatting
 // canvas.addEventListener("click", (event) => {
 //   console.log(event.offsetX, event.offsetY);
