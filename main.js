@@ -27,7 +27,7 @@ class Fritz {
         this.speed = 10;
         this.speedX = 0;
         this.speedY = 0;
-        this.gravity = 0.05;
+        this.gravity = 0.15;
         this.gravitySpeed = 0;
     }
     render() {
@@ -36,6 +36,7 @@ class Fritz {
         ctx.strokeRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = this.color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
+
     }
     gravFunc() {
         this.gravitySpeed += this.gravity;
@@ -54,9 +55,10 @@ class Platform {
     }    
     // makeBuilding(x, y, width, height) 
     makeBuilding(){
+        ctx.globalCompositeOperation = "source-over"
         ctx.lineWidth = 5;
-        ctx.strokeStyle = yellow;
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        // ctx.strokeStyle = yellow;
+        // ctx.strokeRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = blue;
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = yellow;
@@ -75,6 +77,8 @@ class Platform {
         ctx.fillRect(this.x + 5, this.y + 345, this.width - 10, 10);
     }
     makePlat() {
+        ctx.globalCompositeOperation = "source-over"
+
         ctx.strokeStyle = this.borderColor;
         ctx.strokeRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = this.fillColor;
@@ -82,15 +86,15 @@ class Platform {
     }
 }
 
-let fritz = new Fritz(25, 20, 30, 15, "#AD5E32");
-let building1 = new Platform(0, 350, 100, canvas.height, yellow, blue)
+let fritz = new Fritz(25, 330, 30, 15, "#AD5E32");
+let building1 = new Platform(0, 350, 100, canvas.height, '', blue)
 let building2 = new Platform(200, 230, 75, canvas.height)
 let building3 = new Platform(420, 300, 100, canvas.height)
 let building4 = new Platform(700, 180, canvas.width, canvas.height)
-let plat1 = new Platform(130, 290, 50, 13, yellow, blue)
-let plat2 = new Platform(325, 250, 75, 15, yellow, blue)
-let plat3 = new Platform(550, 260, 75, 12, yellow, blue)
-let plat4 = new Platform(650, 220, 25, 12, yellow, blue)
+let plat1 = new Platform(140, 290, 50, 13, yellow, blue)
+let plat2 = new Platform(355, 250, 25, 15, yellow, blue)
+let plat3 = new Platform(570, 260, 55, 12, yellow, blue)
+let plat4 = new Platform(675, 220, 25, 12, yellow, blue)
 
 
 
@@ -108,9 +112,6 @@ function movementHandler(e) {
                 //move fritz down
                 pressed = true;
                 fritz.y += fritz.speed;
-                if (fritz.y > canvas.height) {
-                    endGame();
-                }
                 break;
             case "a":
                 //move fritz left
@@ -193,7 +194,7 @@ function house(){
     //door
     ctx.strokeStyle = "black";
     ctx.strokeRect(782, 140, 22, 37);
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "#E4DECB";
     ctx.fillRect(782, 140, 22, 37)
     //doorknob
     ctx.beginPath();
@@ -207,16 +208,16 @@ function house(){
 }
 
 //add collision to stop fritz from falling when on platform
-function platform1check(fritz, plat) {
-    if (fritz.y + fritz.height >= plat.y){
-        fritz.y == fritz.height + plat.y
-        console.log("through the platform") 
-    }else{
-        console.log("good")
+function platformCheck(fritz, plat) {
+    if (fritz.y > plat.y - fritz.height && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width){
+        fritz.y = plat.y - fritz.height
+        fritz.gravitySpeed = 0.05
+    }else if(fritz.y > plat.y + plat.height){
+        fritz.y = fritz.y
     }
-    
+
 }
-// onPlat(fritz, platform)
+
 
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60);
@@ -224,10 +225,8 @@ const gameLoopInterval = setInterval(gameLoop, 60);
 function gameLoop() {
     //redraw canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //collision check
-    //   onPlat(fritz);
     //render fritz and all platforms
-    fritz.render();
+    
     building1.makeBuilding()
     building2.makeBuilding()
     building3.makeBuilding()
@@ -237,13 +236,24 @@ function gameLoop() {
     plat3.makePlat()
     plat4.makePlat()
     house()
+    fritz.render();
     //platform collision checks
-    platform1check(fritz, building1)
-    // fritz.gravFunc();
+    platformCheck(fritz, building1)
+    platformCheck(fritz, building2)
+    platformCheck(fritz, building3)
+    platformCheck(fritz, building4)
+    platformCheck(fritz, plat1)
+    platformCheck(fritz, plat2)
+    platformCheck(fritz, plat3)
+    platformCheck(fritz, plat4)
+    
+    fritz.gravFunc();
+    if (fritz.y > canvas.height) {
+        endGame();
+    }
 }
 gameLoop();
-console.log(building1)
-console.log(fritz.y)
+
 //find X/Y of click for formatting
 // canvas.addEventListener("click", (event) => {
 //   console.log(event.offsetX, event.offsetY);
