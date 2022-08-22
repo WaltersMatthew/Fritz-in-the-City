@@ -1,6 +1,9 @@
 //const to select items
 const canvas = document.querySelector("canvas");
 const statusDisplay = document.querySelector("#status");
+const homeText = document.querySelector("#homeText");
+const topText = document.querySelector("#topText")
+
 //get canvas context
 const ctx = canvas.getContext("2d");
 //set canvas res to be same as window
@@ -11,18 +14,15 @@ canvas.setAttribute("width", getComputedStyle(canvas)["width"]);
 const yellow = "#FFFC40";
 const blue = "#143362";
 
-// const button = document.querySelector('button')
-
-//rectangles for buildings
-
 //make class for Fritz
 class Fritz {
-    constructor(x, y, width, height, color) {
+    constructor(x, y, width, height, fritzImage) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.color = color;
+        fritzImage = new Image();
+        fritzImage.src = "./img/idle_no_bone.png"
         this.alive = true;
         this.speed = 10;
         this.speedX = 0;
@@ -43,7 +43,7 @@ class Fritz {
         this.y += this.speedY + this.gravitySpeed;
     }
 }
-
+//class for platforms and buildings
 class Platform {
     constructor(x, y, width, height, borderColor, fillColor){
         this.x = x;
@@ -85,8 +85,8 @@ class Platform {
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
-
-let fritz = new Fritz(25, 330, 30, 15, "#AD5E32");
+//create fritz and buildings
+let fritz = new Fritz(25, 330, 30, 15, "./img/idle_no_bone.png");
 let building1 = new Platform(0, 350, 100, canvas.height, '', blue)
 let building2 = new Platform(200, 230, 75, canvas.height)
 let building3 = new Platform(420, 300, 100, canvas.height)
@@ -142,14 +142,17 @@ function movementHandler(e) {
 //pass movementHandler to keypress eventListner
 document.addEventListener("keydown", movementHandler);
 
-
+//click to play again
+document.addEventListener("click", () =>{
+    respawn()
+    topText.innerText = "Get Fritz home to his favorite pink ball!"
+})
 //respawn function
 function respawn() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     fritz = new Fritz(25, 330, 30, 15, "#AD5E32");
 }
-//respawn button
-// button.addEventListener('click', respawn)
+
 //endgame function
 function endGame() {
     fritz.alive = false;
@@ -157,12 +160,24 @@ function endGame() {
     console.log(":(");
     respawn();
 }
-
+//finish map win function
 function winner() {
     fritz.alive = false;
     statusDisplay.innerText = "YOU MADE IT! Time to curl up on the couch!";
+    topText.innerText = "Click anywhere to play again"
     console.log(":)");
 }
+
+function homeTrack (){
+    distance = canvas.width - (fritz.x + fritz.width - 5)
+    if(distance <= 0){
+        distance = 0
+    }
+    homeText.innerText = `${distance} Ft to Home`
+}
+
+
+//draw the house
 function house(){
     //main square
     ctx.lineWidth = 2;
@@ -209,15 +224,16 @@ function house(){
 
 //add collision to stop fritz from falling when on platform
 function platformCheck(fritz, plat) {
-    if (fritz.y > plat.y - fritz.height && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width){
+    if (fritz.y > plat.y - fritz.height && fritz.y < plat.y + plat.height && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width){
         fritz.y = plat.y - fritz.height
         fritz.gravitySpeed = 0.05
-    }else if(fritz.y > plat.y + plat.height){
+    }else if(fritz.y > plat.y + 50){
         fritz.y = fritz.y
     }
 
 }
 
+//bottomLeft text 
 
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60);
@@ -225,8 +241,8 @@ const gameLoopInterval = setInterval(gameLoop, 60);
 function gameLoop() {
     //redraw canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //render fritz and all platforms
     
+    //render fritz and all platforms
     building1.makeBuilding()
     building2.makeBuilding()
     building3.makeBuilding()
@@ -237,6 +253,7 @@ function gameLoop() {
     plat4.makePlat()
     house()
     fritz.render();
+   
     //platform collision checks
     platformCheck(fritz, building1)
     platformCheck(fritz, building2)
@@ -246,11 +263,12 @@ function gameLoop() {
     platformCheck(fritz, plat2)
     platformCheck(fritz, plat3)
     platformCheck(fritz, plat4)
-    
+    //gravity
     fritz.gravFunc();
     if (fritz.y > canvas.height) {
         endGame();
     }
+    homeTrack()
 }
 gameLoop();
 

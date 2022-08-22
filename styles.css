@@ -1,7 +1,6 @@
 body {
     text-align: center;
     background-color: black;
-    
 }
 
 canvas {
@@ -14,7 +13,7 @@ canvas {
 
 #container {
     max-width: 50em;
-    background-color: #143362;
+    background-color: black;
     margin: 0 auto;
     padding: 1em;
     display: grid;
@@ -47,4 +46,7 @@ main {
 
 #btm-right {
     grid-area: btm-right;
+}
+#topText{
+    font-size: 25px;
 }
