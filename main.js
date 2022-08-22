@@ -17,17 +17,34 @@ const blue = "#143362";
 
 //make class for Fritz
 class Fritz {
-    constructor(x, y, width, height, color) {
+    constructor(x, y, width, height, color, type) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.color = color
+        this.type = type
+        if (type == "image") {
+            this.image = new Image();
+            this.image.src = color;
+        }
+        this.update = function(){
+            if(type == "image"){
+                ctx.drawImage(this.image,
+                    this.x,
+                    this.y,
+                    this.width + 100,
+                    this.height + 50)
+            }else {
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height)
+            }
+        }
         this.alive = true;
         this.speed = 10;
         this.speedX = 0;
         this.speedY = 0;
-        this.gravity = 0.15;
+        this.gravity = 0.2;
         this.gravitySpeed = 0;
         // this.moveRight = this.x += this.speed
         // this.moveLeft = this.x -= this.speed
@@ -89,15 +106,16 @@ class Platform {
     }
 }
 //create fritz and buildings
-let fritz = new Fritz(25, 330, 30, 15, "#5B311C");
+let fritz = new Fritz(25, 330, 35, 20, "brown");
 let building1 = new Platform(0, 350, 100, canvas.height, '', blue)
-let building2 = new Platform(200, 230, 75, canvas.height)
-let building3 = new Platform(420, 300, 100, canvas.height)
+let building2 = new Platform(220, 200, 50, canvas.height)
+let building3 = new Platform(460, 300, 50, canvas.height)
 let building4 = new Platform(700, 180, canvas.width, canvas.height)
-let plat1 = new Platform(140, 290, 50, 13, yellow, blue)
-let plat2 = new Platform(355, 250, 25, 15, yellow, blue)
-let plat3 = new Platform(570, 260, 55, 12, yellow, blue)
-let plat4 = new Platform(675, 220, 25, 12, yellow, blue)
+let plat1 = new Platform(110, 310, 50, 13, yellow, blue)
+let plat2 = new Platform(170, 250, 25, 15, yellow, blue)
+let plat3 = new Platform(355, 250, 25, 15, yellow, blue)
+let plat4 = new Platform(570, 260, 55, 12, yellow, blue)
+let plat5 = new Platform(675, 220, 25, 12, yellow, blue)
 
 
 
@@ -189,6 +207,7 @@ document.addEventListener("keydown", movementHandler);
 document.addEventListener("click", () =>{
     respawn()
     topText.innerText = "Get Fritz home to his favorite pink ball!"
+    statusDisplay.innerText = "WASD to move, Spacebar to jump!"
 })
 //respawn function
 function respawn() {
@@ -199,9 +218,8 @@ function respawn() {
 //endgame function
 function endGame() {
     fritz.alive = false;
-    statusDisplay.innerText = "Oh no! Try again to get Fritz home.";
+    statusDisplay.innerText = "Oh no! Click anywhere to try again...";
     console.log(":(");
-    respawn();
 }
 //finish map win function
 function winner() {
@@ -266,12 +284,18 @@ function house(){
 }
 
 //add collision to stop fritz from falling when on platform
-function platformCheck(fritz, plat) {
+function platformCheckY(fritz, plat) {
     if (fritz.y > plat.y - fritz.height && fritz.y < plat.y && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width - 5){
         fritz.y = plat.y - fritz.height
         fritz.gravitySpeed = 0.05
     }
-
+}
+function platformCheckX(fritz, plat) {
+    if(fritz.x > plat.x + fritz.width && fritz.x < plat.x + plat.width && fritz.y < plat.y + fritz.height && fritz.y > plat.y + plat.height){
+        fritz.x = plat.x - fritz.width
+    // }else if(fritz.y > plat.y){
+    //     fritz.x = fritz.x
+    }
 }
 
 
@@ -292,25 +316,35 @@ function gameLoop() {
     plat2.makePlat()
     plat3.makePlat()
     plat4.makePlat()
+    plat5.makePlat()
     house()
-    fritz.render();
+    fritz.update();
    
     //platform collision checks
-    platformCheck(fritz, building1)
-    platformCheck(fritz, building2)
-    platformCheck(fritz, building3)
-    platformCheck(fritz, building4)
-    platformCheck(fritz, plat1)
-    platformCheck(fritz, plat2)
-    platformCheck(fritz, plat3)
-    platformCheck(fritz, plat4)
+    platformCheckY(fritz, building1)
+    platformCheckY(fritz, building2)
+    platformCheckY(fritz, building3)
+    platformCheckY(fritz, building4)
+    platformCheckY(fritz, plat1)
+    platformCheckY(fritz, plat2)
+    platformCheckY(fritz, plat3)
+    platformCheckY(fritz, plat4)
+    platformCheckY(fritz, plat5)
+    platformCheckX(fritz, building2)
+    platformCheckX(fritz, building3)
+    platformCheckX(fritz, building4)
+    platformCheckX(fritz, plat1)
+    platformCheckX(fritz, plat2)
+    platformCheckX(fritz, plat3)
+    platformCheckX(fritz, plat4)
+    platformCheckX(fritz, plat5)
     //gravity
     fritz.gravFunc();
     if (fritz.y > canvas.height) {
         endGame();
     }
     homeTrack()
-    
+
 //W3Schools attempt
 //     if (myGameArea.keys && myGameArea.keys[37]) {fritz.speedX = -10; }
 //   if (myGameArea.keys && myGameArea.keys[39]) {fritz.speedX = 10; }
