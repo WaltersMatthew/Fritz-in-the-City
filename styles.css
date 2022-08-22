@@ -29,11 +29,11 @@ canvas {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #122020;
 }
 
 #top{
     grid-area: top;
+    background-image: linear-gradient(#122020, #143362, #122020);
 }
 
 main {
@@ -42,11 +42,14 @@ main {
 
 #btm-left {
     grid-area: btm-left;
+    background-image: linear-gradient(#122020, #143362, #122020);
 }
 
 #btm-right {
     grid-area: btm-right;
+    background-image: linear-gradient(#122020, #143362, #122020);
 }
-#topText{
+h2{
     font-size: 25px;
+    color: #FFFC40;
 }

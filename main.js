@@ -3,9 +3,10 @@ const canvas = document.querySelector("canvas");
 const statusDisplay = document.querySelector("#status");
 const homeText = document.querySelector("#homeText");
 const topText = document.querySelector("#topText")
+//set myGameArea obj
 
 //get canvas context
-const ctx = canvas.getContext("2d");
+this.ctx = canvas.getContext("2d");
 //set canvas res to be same as window
 canvas.setAttribute("height", getComputedStyle(canvas)["height"]);
 canvas.setAttribute("width", getComputedStyle(canvas)["width"]);
@@ -16,19 +17,21 @@ const blue = "#143362";
 
 //make class for Fritz
 class Fritz {
-    constructor(x, y, width, height, fritzImage) {
+    constructor(x, y, width, height, color) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        fritzImage = new Image();
-        fritzImage.src = "./img/idle_no_bone.png"
+        this.color = color
         this.alive = true;
         this.speed = 10;
         this.speedX = 0;
         this.speedY = 0;
         this.gravity = 0.15;
         this.gravitySpeed = 0;
+        // this.moveRight = this.x += this.speed
+        // this.moveLeft = this.x -= this.speed
+        // this.jump = this.y -= this.speed * 6
     }
     render() {
         ctx.lineWidth = 5;
@@ -86,7 +89,7 @@ class Platform {
     }
 }
 //create fritz and buildings
-let fritz = new Fritz(25, 330, 30, 15, "./img/idle_no_bone.png");
+let fritz = new Fritz(25, 330, 30, 15, "#5B311C");
 let building1 = new Platform(0, 350, 100, canvas.height, '', blue)
 let building2 = new Platform(200, 230, 75, canvas.height)
 let building3 = new Platform(420, 300, 100, canvas.height)
@@ -98,24 +101,21 @@ let plat4 = new Platform(675, 220, 25, 12, yellow, blue)
 
 
 
-//create movementHandler function
+// //create movementHandler function
 function movementHandler(e) {
     // how many pixels fritz moves
     if (fritz.alive ) {
         switch (e.key) {
             case "w":
                 //move fritz up
-                pressed = true;
                 fritz.y -= fritz.speed;
                 break;
             case "s":
                 //move fritz down
-                pressed = true;
                 fritz.y += fritz.speed;
                 break;
             case "a":
                 //move fritz left
-                pressed = true;
                 fritz.x -= fritz.speed;
                 if (fritz.x < 0) {
                     fritz.x = 0;
@@ -123,7 +123,6 @@ function movementHandler(e) {
                 break;
             case "d":
                 // move fritz right
-                pressed = true;
                 fritz.x += fritz.speed;
                 if (fritz.x + fritz.width > canvas.width) {
                     winner();
@@ -131,16 +130,60 @@ function movementHandler(e) {
                 break;
             case " ":
                 // make fritz jump
-                pressed = true;
+                let jumps = 1
+                if (jumps > 0){
                 fritz.y -= fritz.speed * 6;
-                console.log("jump doggy!");
+                jumps--
+                }
                 break;
         }
     }
 }
-
-//pass movementHandler to keypress eventListner
+// // pass movementHandler to keypress eventListner
 document.addEventListener("keydown", movementHandler);
+
+
+// working out multiple keypress
+
+// attempt 1
+// document.addEventListener("keydown", (e) => console.log(e.keyCode))
+// const controller = {
+//     68: {pressed: false, function: fritz.moveRight},
+//     65: {pressed: false, function: fritz.moveLeft},
+//     32: {pressed: false, function: fritz.jump}
+// }
+// document.addEventListener("keydown", (e) => {
+//     if(controller[e.keyCode]){
+//       controller[e.keyCode].pressed = true
+//     }
+//   })
+//   document.addEventListener("keyup", (e) => {
+//     if(controller[e.keyCode]){
+//       controller[e.keyCode].pressed = false
+//     }
+//   })
+//   const executeMoves = () => {
+//     Object.keys(controller).forEach(key=> {
+//       controller[key].pressed && controller[key].func()
+//     })
+//   }
+
+//attempt 2
+// const myGameArea = {
+//     start: function() {
+//         document.addEventListener('keydown', function (e) {
+//         myGameArea.keys = (myGameArea.keys || []);
+//         myGameArea.keys[e.keyCode] = true;
+//         console.log(myGameArea.keys[e])
+//     })
+//     document.addEventListener('keyup', function (e) {
+//         myGameArea.keys[e.keyCode] = false;
+//         console.log(myGameArea.keys[e])
+//         })
+//     }
+// }
+
+
 
 //click to play again
 document.addEventListener("click", () =>{
@@ -183,8 +226,8 @@ function house(){
     ctx.lineWidth = 2;
     ctx.fillStyle = yellow;
     ctx.strokeStyle = "black";
-    ctx.strokeRect(752, 125, 50, 52);
-    ctx.fillRect(752, 125, 50, 52);
+    ctx.strokeRect(752, 125, 55, 54);
+    ctx.fillRect(752, 125, 55, 54);
     //roof
     ctx.fillStyle = "#D0693E"
     ctx.beginPath();
@@ -208,9 +251,9 @@ function house(){
     ctx.stroke();
     //door
     ctx.strokeStyle = "black";
-    ctx.strokeRect(782, 140, 22, 37);
+    ctx.strokeRect(782, 140, 22, 38);
     ctx.fillStyle = "#E4DECB";
-    ctx.fillRect(782, 140, 22, 37)
+    ctx.fillRect(782, 140, 22, 38)
     //doorknob
     ctx.beginPath();
     ctx.arc(786, 160, 2, 0, 2 * Math.PI);
@@ -218,27 +261,25 @@ function house(){
     //ball
     ctx.fillStyle = "hotpink";
     ctx.beginPath();
-    ctx.arc(770, 171, 6, 0, 2 * Math.PI);
+    ctx.arc(769, 172, 7, 0, 2 * Math.PI);
     ctx.fill();
 }
 
 //add collision to stop fritz from falling when on platform
 function platformCheck(fritz, plat) {
-    if (fritz.y > plat.y - fritz.height && fritz.y < plat.y + plat.height && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width){
+    if (fritz.y > plat.y - fritz.height && fritz.y < plat.y && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width - 5){
         fritz.y = plat.y - fritz.height
         fritz.gravitySpeed = 0.05
-    }else if(fritz.y > plat.y + 50){
-        fritz.y = fritz.y
     }
 
 }
 
-//bottomLeft text 
 
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60);
 
 function gameLoop() {
+    // executeMoves()
     //redraw canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -269,6 +310,12 @@ function gameLoop() {
         endGame();
     }
     homeTrack()
+    
+//W3Schools attempt
+//     if (myGameArea.keys && myGameArea.keys[37]) {fritz.speedX = -10; }
+//   if (myGameArea.keys && myGameArea.keys[39]) {fritz.speedX = 10; }
+//   if (myGameArea.keys && myGameArea.keys[38]) {fritz.speedY = -10; }
+//   if (myGameArea.keys && myGameArea.keys[40]) {fritz.speedY = 10; }
 }
 gameLoop();
 
