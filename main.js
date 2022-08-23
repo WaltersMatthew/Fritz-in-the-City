@@ -12,6 +12,7 @@ canvas.setAttribute("width", getComputedStyle(canvas)["width"]);
 const yellow = "#FFFC40";
 const blue = "#143362";
 
+const gravity = 0.2
 //make class for Fritz
 class Fritz {
     constructor(x, y, width, height, color, type) {
@@ -25,38 +26,28 @@ class Fritz {
             this.image = new Image();
             this.image.src = color;
         }
-        this.update = function(){
-            if(type == "image"){
-                ctx.drawImage(this.image,
-                    this.x,
-                    this.y,
-                    this.width,
-                    this.height)
-            }else {
-                ctx.fillStyle = color;
-                ctx.fillRect(this.x, this.y, this.width, this.height)
-            }
-        }
         this.alive = true;
         this.speed = 10;
-        this.speedX = 0;
-        this.speedY = 0;
+        this.velocity = {
+            x:0,
+            y:0
+        }
         this.jumps = 1;
-        this.gravity = 0.2;
-        this.gravitySpeed = 0;
     }
-    render() {
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+render() {
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = "black";
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
 
-    }
-    gravFunc() {
-        this.gravitySpeed += this.gravity;
-        this.y += this.speedY + this.gravitySpeed;
-    }
+update() {
+    this.render()
+    this.x += this.velocity.x
+    this.y += this.velocity.y
+    this.velocity.y += gravity;
+}
 }
 //class for platforms and buildings
 class Platform {
@@ -112,39 +103,52 @@ let plat3 = new Platform(355, 250, 25, 10, yellow, blue)
 let plat4 = new Platform(560, 260, 55, 10, yellow, blue)
 let plat5 = new Platform(675, 220, 25, 10, yellow, blue)
 
+const keys = {
+    right: {
+        pressed: false
+    },
+    left: {
+        pressed: false
+    },
+    space: {
+        pressed: false
+    }
+}
+
+
 
 
 //create movementHandler function
-function movementHandler(e) {
-    if (fritz.alive ) {
-        switch (e.key) {
-            case "a":
-                //move fritz left
-                fritz.x -= fritz.speed;
-                if (fritz.x < 0) {
-                    fritz.x = 0;
-                }
-                break;
-            case "d":
-                // move fritz right
-                fritz.x += fritz.speed;
-                if (fritz.x + fritz.width > canvas.width) {
-                    winner();
-                }
-                break;
-            case " ":
-                // make fritz jump        
-                if (fritz.jumps > 0){
-                fritz.y -= fritz.speed * 6;
-                }
-                fritz.jumps--
-                console.log (fritz.jumps)
-                break;
-        }
-    }
-}
+// function movementHandler(e) {
+//     if (fritz.alive ) {
+//         switch (e.key) {
+//             case "a":
+//                 //move fritz left
+//                 fritz.x -= fritz.speed;
+//                 if (fritz.x < 0) {
+//                     fritz.x = 0;
+//                 }
+//                 break;
+//             case "d":
+//                 // move fritz right
+//                 fritz.x += fritz.speed;
+//                 if (fritz.x + fritz.width > canvas.width) {
+//                     winner();
+//                 }
+//                 break;
+//             case " ":
+//                 // make fritz jump        
+//                 if (fritz.jumps > 0){
+//                 fritz.y -= fritz.speed * 6;
+//                 }
+//                 fritz.jumps--
+//                 console.log (fritz.jumps)
+//                 break;
+//         }
+//     }
+// }
 // pass movementHandler to keypress eventListner
-document.addEventListener("keydown", movementHandler);
+// document.addEventListener("keydown", movementHandler);
 
 
 //click to play again
@@ -230,7 +234,7 @@ function house(){
 function platformCheckY(fritz, plat) {
     if (fritz.y > plat.y - fritz.height && fritz.y < plat.y && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width - 5){
         fritz.y = plat.y - fritz.height
-        fritz.gravitySpeed = 0.05
+        fritz.velocity.y = 0
         fritz.jumps = 1
     }else if (fritz.y > plat.y + plat.height && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width){
         fritz.y = plat.y + plat.height
@@ -284,7 +288,6 @@ function gameLoop() {
     platformCheckX(fritz, plat4)
     platformCheckX(fritz, plat5)
     //gravity
-    fritz.gravFunc();
     if (fritz.y > canvas.height) {
         endGame();
     }
@@ -292,3 +295,41 @@ function gameLoop() {
 
 }
 gameLoop();
+
+addEventListener("keydown", ({keyCode}) => {
+    switch (keyCode) {
+        case 65:
+            console.log("left")
+            fritz.velocity.x -= 10
+            keys.left.pressed = true
+            break
+        case 68:
+            fritz.velocity.x += 10
+            keys.right.pressed = true
+            break
+        case 32: 
+            if (keys.space.pressed = false){
+                fritz.velocity.y -= 50
+                keys.space.pressed = true
+            }
+            break
+    }
+})
+addEventListener("keyup", ({keyCode}) => {
+    switch (keyCode) {
+        case 65:
+            fritz.velocity.x = 0
+            keys.left.pressed = false
+            break
+        case 68:
+            //right
+            fritz.velocity.x = 0
+            keys.right.pressed = false
+            break
+        case 32: 
+            fritz.velocity.y = 0
+            keys.space.pressed = false
+            break
+    }
+})
+
