@@ -44,6 +44,7 @@ class Fritz {
         this.speed = 10;
         this.speedX = 0;
         this.speedY = 0;
+        this.jumps = 1;
         this.gravity = 0.2;
         this.gravitySpeed = 0;
         // this.moveRight = this.x += this.speed
@@ -124,14 +125,14 @@ function movementHandler(e) {
     // how many pixels fritz moves
     if (fritz.alive ) {
         switch (e.key) {
-            case "w":
-                //move fritz up
-                fritz.y -= fritz.speed;
-                break;
-            case "s":
-                //move fritz down
-                fritz.y += fritz.speed;
-                break;
+            // case "w":
+            //     //move fritz up
+            //     fritz.y -= fritz.speed;
+            //     break;
+            // case "s":
+            //     //move fritz down
+            //     fritz.y += fritz.speed;
+            //     break;
             case "a":
                 //move fritz left
                 fritz.x -= fritz.speed;
@@ -147,12 +148,12 @@ function movementHandler(e) {
                 }
                 break;
             case " ":
-                // make fritz jump
-                let jumps = 1
-                if (jumps > 0){
+                // make fritz jump        
+                if (fritz.jumps > 0){
                 fritz.y -= fritz.speed * 6;
-                jumps--
                 }
+                fritz.jumps--
+                console.log (fritz.jumps)
                 break;
         }
     }
@@ -288,6 +289,7 @@ function platformCheckY(fritz, plat) {
     if (fritz.y > plat.y - fritz.height && fritz.y < plat.y && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width - 5){
         fritz.y = plat.y - fritz.height
         fritz.gravitySpeed = 0.05
+        fritz.jumps = 1
     }else if (fritz.y > plat.y + plat.height && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width){
         fritz.y = plat.y + plat.height
     }
