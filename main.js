@@ -9,8 +9,9 @@ this.ctx = canvas.getContext("2d");
 canvas.setAttribute("height", getComputedStyle(canvas)["height"]);
 canvas.setAttribute("width", getComputedStyle(canvas)["width"]);
 //color palette
-const yellow = "#FFFC40";
-const blue = "#143362";
+const fill = "#2A2D41";
+const border = "#B7CF6C";
+const back = "#617659";
 
 const gravity = 2;
 //make class for Fritz
@@ -34,18 +35,19 @@ class Fritz {
         };
     }
     render() {
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        // ctx.lineWidth = 5;
+        // ctx.strokeStyle = "black";
+        // ctx.strokeRect(this.x, this.y, this.width, this.height);
+        // ctx.fillStyle = this.color;
+        // ctx.fillRect(this.x, this.y, this.width, this.height);
     }
-
+    
     update() {
-        this.render();
+        // this.render();
         this.x += this.velocity.x;
         this.y += this.velocity.y;
         this.velocity.y += gravity;
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
     }
 }
 //class for platforms and buildings
@@ -62,24 +64,26 @@ class Platform {
     makeBuilding() {
         ctx.globalCompositeOperation = "source-over";
         ctx.lineWidth = 5;
-        // ctx.strokeStyle = yellow;
+        // ctx.strokeStyle = fill;
         // ctx.strokeRect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = blue;
+        ctx.fillStyle = this.borderColor;
         ctx.fillRect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = yellow;
+        ctx.fillStyle = this.fillColor;
         //windows
         ctx.fillRect(this.x + 5, this.y + 5, this.width - 10, 10);
         ctx.fillRect(this.x + 5, this.y + 25, this.width - 10, 10);
         ctx.fillRect(this.x + 5, this.y + 45, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 65, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 105, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 125, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 165, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 285, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 305, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 345, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 325, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 345, this.width - 10, 10);
+        if(this.x > 350){
+            ctx.fillRect(this.x + 5, this.y + 65, this.width - 10, 10);
+            ctx.fillRect(this.x + 5, this.y + 105, this.width - 10, 10);
+            ctx.fillRect(this.x + 5, this.y + 125, this.width - 10, 10);
+            ctx.fillRect(this.x + 5, this.y + 165, this.width - 10, 10);
+            ctx.fillRect(this.x + 5, this.y + 285, this.width - 10, 10);
+            ctx.fillRect(this.x + 5, this.y + 305, this.width - 10, 10);
+            ctx.fillRect(this.x + 5, this.y + 345, this.width - 10, 10);
+            ctx.fillRect(this.x + 5, this.y + 325, this.width - 10, 10);
+            ctx.fillRect(this.x + 5, this.y + 345, this.width - 10, 10);
+        }
     }
     makePlat() {
         ctx.globalCompositeOperation = "source-over";
@@ -91,16 +95,16 @@ class Platform {
     }
 }
 //create fritz and buildings
-let fritz = new Fritz(25, 330, 35, 20, "./img/8bitty.png", "image");
-let building1 = new Platform(0, 350, 100, canvas.height, "", blue);
-let building2 = new Platform(220, 200, 50, canvas.height);
-let building3 = new Platform(460, 300, 50, canvas.height);
-let building4 = new Platform(700, 180, canvas.width, canvas.height);
-let plat1 = new Platform(110, 300, 50, 10, yellow, blue);
-let plat2 = new Platform(170, 250, 25, 10, yellow, blue);
-let plat3 = new Platform(355, 250, 25, 10, yellow, blue);
-let plat4 = new Platform(560, 260, 55, 10, yellow, blue);
-let plat5 = new Platform(675, 220, 25, 10, yellow, blue);
+let fritz = new Fritz(25, 250, 65, 25, "./img/8bitty.png", "image");
+let building1 = new Platform(0, 310, 100, canvas.height, fill, border);
+let building2 = new Platform(220, 130, 50, 65, "#E78DA2", "#FCBEA3");
+let building3 = new Platform(444, 320, 89, canvas.height, fill, border);
+let building4 = new Platform(700, 180, canvas.width, canvas.height, fill, "#617659");
+let plat1 = new Platform(120, 250, 50, 10, back, fill);
+let plat2 = new Platform(170, 200, 25, 10, "#E78DA2", "#FCBEA3");
+let plat3 = new Platform(345, 240, 25, 10, back, fill);
+let plat4 = new Platform(560, 260, 55, 10, back, fill);
+let plat5 = new Platform(675, 220, 20, 10, back, fill);
 
 const keys = {
     right: {
@@ -111,7 +115,7 @@ const keys = {
     },
     space: {
         pressed: false,
-    },
+    }
 };
 
 //click to play again
@@ -123,7 +127,7 @@ document.addEventListener("click", () => {
 //respawn function
 function respawn() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    fritz = new Fritz(25, 330, 30, 15, "#AD5E32");
+    fritz = new Fritz(25, 250, 65, 25, "./img/8bitty.png", "image")
 }
 //endgame function
 function endGame() {
@@ -154,7 +158,7 @@ function homeTrack() {
 function house() {
     //main square
     ctx.lineWidth = 2;
-    ctx.fillStyle = yellow;
+    ctx.fillStyle = "#FFFC40";
     ctx.strokeStyle = "black";
     ctx.strokeRect(752, 125, 55, 54);
     ctx.fillRect(752, 125, 55, 54);
@@ -197,7 +201,7 @@ function house() {
 
 //add collision to stop fritz from falling when on platform
 function platformCheckY(fritz, plat) {
-    if (fritz.y + fritz.height <= plat.y && fritz.y + fritz.height + fritz.velocity.y >= plat.y && fritz.x + fritz.width >= plat.x && fritz.x <= plat.x + plat.width) {
+    if (fritz.y + fritz.height <= plat.y && fritz.y + fritz.height + fritz.velocity.y >= plat.y && fritz.x + fritz.width -20 >= plat.x && fritz.x + 10 <= plat.x + plat.width) {
         fritz.velocity.y = 0
     }else if(fritz.x < 0){
         fritz.x = 0
@@ -262,9 +266,7 @@ addEventListener("keydown", ({keyCode}) => {
             keys.right.pressed = true;
             break;
         case 87:
-            if(fritz.alive){
-                keys.space.pressed = true;
-            }
+            keys.space.pressed = true;
             break;
     }
 });
