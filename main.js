@@ -96,15 +96,15 @@ class Platform {
 }
 //create fritz and buildings
 let fritz = new Fritz(25, 250, 65, 25, "./img/8bitty.png", "image");
-let building1 = new Platform(0, 310, 100, canvas.height, fill, border);
+let building1 = new Platform(0, 305, 90, canvas.height, fill, border);
 let building2 = new Platform(220, 130, 50, 65, "#E78DA2", "#FCBEA3");
 let building3 = new Platform(444, 320, 89, canvas.height, fill, border);
-let building4 = new Platform(700, 180, canvas.width, canvas.height, fill, "#617659");
-let plat1 = new Platform(120, 250, 50, 10, back, fill);
-let plat2 = new Platform(170, 200, 25, 10, "#E78DA2", "#FCBEA3");
+let building4 = new Platform(740, 180, canvas.width, canvas.height, fill, "#617659");
+let plat1 = new Platform(125, 240, 40, 10, back, fill);
+let plat2 = new Platform(175, 200, 25, 10, "#FCBEA3", "#E88D9D");
 let plat3 = new Platform(345, 240, 25, 10, back, fill);
 let plat4 = new Platform(560, 260, 55, 10, back, fill);
-let plat5 = new Platform(675, 220, 20, 10, back, fill);
+let plat5 = new Platform(650, 220, 40, 10, "#E88D9D", "#C66A87");
 
 const keys = {
     right: {
