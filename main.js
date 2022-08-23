@@ -3,14 +3,11 @@ const canvas = document.querySelector("canvas");
 const statusDisplay = document.querySelector("#status");
 const homeText = document.querySelector("#homeText");
 const topText = document.querySelector("#topText")
-//set myGameArea obj
-
 //get canvas context
 this.ctx = canvas.getContext("2d");
 //set canvas res to be same as window
 canvas.setAttribute("height", getComputedStyle(canvas)["height"]);
 canvas.setAttribute("width", getComputedStyle(canvas)["width"]);
-
 //color palette
 const yellow = "#FFFC40";
 const blue = "#143362";
@@ -33,8 +30,8 @@ class Fritz {
                 ctx.drawImage(this.image,
                     this.x,
                     this.y,
-                    this.width + 100,
-                    this.height + 50)
+                    this.width,
+                    this.height)
             }else {
                 ctx.fillStyle = color;
                 ctx.fillRect(this.x, this.y, this.width, this.height)
@@ -47,9 +44,6 @@ class Fritz {
         this.jumps = 1;
         this.gravity = 0.2;
         this.gravitySpeed = 0;
-        // this.moveRight = this.x += this.speed
-        // this.moveLeft = this.x -= this.speed
-        // this.jump = this.y -= this.speed * 6
     }
     render() {
         ctx.lineWidth = 5;
@@ -107,32 +101,23 @@ class Platform {
     }
 }
 //create fritz and buildings
-let fritz = new Fritz(25, 330, 35, 20, "brown");
+let fritz = new Fritz(25, 330, 35, 20, "./img/8bitty.png", "image");
 let building1 = new Platform(0, 350, 100, canvas.height, '', blue)
 let building2 = new Platform(220, 200, 50, canvas.height)
 let building3 = new Platform(460, 300, 50, canvas.height)
 let building4 = new Platform(700, 180, canvas.width, canvas.height)
-let plat1 = new Platform(110, 310, 50, 13, yellow, blue)
-let plat2 = new Platform(170, 250, 25, 15, yellow, blue)
-let plat3 = new Platform(355, 250, 25, 15, yellow, blue)
-let plat4 = new Platform(560, 260, 55, 12, yellow, blue)
-let plat5 = new Platform(675, 220, 25, 12, yellow, blue)
+let plat1 = new Platform(110, 300, 50, 10, yellow, blue)
+let plat2 = new Platform(170, 250, 25, 10, yellow, blue)
+let plat3 = new Platform(355, 250, 25, 10, yellow, blue)
+let plat4 = new Platform(560, 260, 55, 10, yellow, blue)
+let plat5 = new Platform(675, 220, 25, 10, yellow, blue)
 
 
 
-// //create movementHandler function
+//create movementHandler function
 function movementHandler(e) {
-    // how many pixels fritz moves
     if (fritz.alive ) {
         switch (e.key) {
-            // case "w":
-            //     //move fritz up
-            //     fritz.y -= fritz.speed;
-            //     break;
-            // case "s":
-            //     //move fritz down
-            //     fritz.y += fritz.speed;
-            //     break;
             case "a":
                 //move fritz left
                 fritz.x -= fritz.speed;
@@ -158,50 +143,8 @@ function movementHandler(e) {
         }
     }
 }
-// // pass movementHandler to keypress eventListner
+// pass movementHandler to keypress eventListner
 document.addEventListener("keydown", movementHandler);
-
-
-// working out multiple keypress
-
-// attempt 1
-// document.addEventListener("keydown", (e) => console.log(e.keyCode))
-// const controller = {
-//     68: {pressed: false, function: fritz.moveRight},
-//     65: {pressed: false, function: fritz.moveLeft},
-//     32: {pressed: false, function: fritz.jump}
-// }
-// document.addEventListener("keydown", (e) => {
-//     if(controller[e.keyCode]){
-//       controller[e.keyCode].pressed = true
-//     }
-//   })
-//   document.addEventListener("keyup", (e) => {
-//     if(controller[e.keyCode]){
-//       controller[e.keyCode].pressed = false
-//     }
-//   })
-//   const executeMoves = () => {
-//     Object.keys(controller).forEach(key=> {
-//       controller[key].pressed && controller[key].func()
-//     })
-//   }
-
-//attempt 2
-// const myGameArea = {
-//     start: function() {
-//         document.addEventListener('keydown', function (e) {
-//         myGameArea.keys = (myGameArea.keys || []);
-//         myGameArea.keys[e.keyCode] = true;
-//         console.log(myGameArea.keys[e])
-//     })
-//     document.addEventListener('keyup', function (e) {
-//         myGameArea.keys[e.keyCode] = false;
-//         console.log(myGameArea.keys[e])
-//         })
-//     }
-// }
-
 
 
 //click to play again
@@ -215,7 +158,6 @@ function respawn() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     fritz = new Fritz(25, 330, 30, 15, "#AD5E32");
 }
-
 //endgame function
 function endGame() {
     fritz.alive = false;
@@ -229,7 +171,7 @@ function winner() {
     topText.innerText = "Click anywhere to play again"
     console.log(":)");
 }
-
+//Ft to Home function
 function homeTrack (){
     distance = canvas.width - (fritz.x + fritz.width - 5)
     if(distance <= 0){
@@ -307,7 +249,6 @@ function platformCheckX(fritz, plat) {
 const gameLoopInterval = setInterval(gameLoop, 60);
 
 function gameLoop() {
-    // executeMoves()
     //redraw canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -349,15 +290,5 @@ function gameLoop() {
     }
     homeTrack()
 
-//W3Schools attempt
-//     if (myGameArea.keys && myGameArea.keys[37]) {fritz.speedX = -10; }
-//   if (myGameArea.keys && myGameArea.keys[39]) {fritz.speedX = 10; }
-//   if (myGameArea.keys && myGameArea.keys[38]) {fritz.speedY = -10; }
-//   if (myGameArea.keys && myGameArea.keys[40]) {fritz.speedY = 10; }
 }
 gameLoop();
-
-//find X/Y of click for formatting
-// canvas.addEventListener("click", (event) => {
-//   console.log(event.offsetX, event.offsetY);
-// });
