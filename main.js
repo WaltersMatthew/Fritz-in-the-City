@@ -2,7 +2,7 @@
 const canvas = document.querySelector("canvas");
 const statusDisplay = document.querySelector("#status");
 const homeText = document.querySelector("#homeText");
-const topText = document.querySelector("#topText")
+const topText = document.querySelector("#topText");
 //get canvas context
 this.ctx = canvas.getContext("2d");
 //set canvas res to be same as window
@@ -12,7 +12,7 @@ canvas.setAttribute("width", getComputedStyle(canvas)["width"]);
 const yellow = "#FFFC40";
 const blue = "#143362";
 
-const gravity = 0.2
+const gravity = 2;
 //make class for Fritz
 class Fritz {
     constructor(x, y, width, height, color, type) {
@@ -20,8 +20,8 @@ class Fritz {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.color = color
-        this.type = type
+        this.color = color;
+        this.type = type;
         if (type == "image") {
             this.image = new Image();
             this.image.src = color;
@@ -29,39 +29,38 @@ class Fritz {
         this.alive = true;
         this.speed = 10;
         this.velocity = {
-            x:0,
-            y:0
-        }
-        this.jumps = 1;
+            x: 0,
+            y: 0,
+        };
     }
-render() {
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = "black";
-    ctx.strokeRect(this.x, this.y, this.width, this.height);
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    render() {
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
-update() {
-    this.render()
-    this.x += this.velocity.x
-    this.y += this.velocity.y
-    this.velocity.y += gravity;
-}
+    update() {
+        this.render();
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+        this.velocity.y += gravity;
+    }
 }
 //class for platforms and buildings
 class Platform {
-    constructor(x, y, width, height, borderColor, fillColor){
+    constructor(x, y, width, height, borderColor, fillColor) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.borderColor = borderColor;
         this.fillColor = fillColor;
-    }    
-    // makeBuilding(x, y, width, height) 
-    makeBuilding(){
-        ctx.globalCompositeOperation = "source-over"
+    }
+    // makeBuilding(x, y, width, height)
+    makeBuilding() {
+        ctx.globalCompositeOperation = "source-over";
         ctx.lineWidth = 5;
         // ctx.strokeStyle = yellow;
         // ctx.strokeRect(this.x, this.y, this.width, this.height);
@@ -83,7 +82,7 @@ class Platform {
         ctx.fillRect(this.x + 5, this.y + 345, this.width - 10, 10);
     }
     makePlat() {
-        ctx.globalCompositeOperation = "source-over"
+        ctx.globalCompositeOperation = "source-over";
 
         ctx.strokeStyle = this.borderColor;
         ctx.strokeRect(this.x, this.y, this.width, this.height);
@@ -93,70 +92,34 @@ class Platform {
 }
 //create fritz and buildings
 let fritz = new Fritz(25, 330, 35, 20, "./img/8bitty.png", "image");
-let building1 = new Platform(0, 350, 100, canvas.height, '', blue)
-let building2 = new Platform(220, 200, 50, canvas.height)
-let building3 = new Platform(460, 300, 50, canvas.height)
-let building4 = new Platform(700, 180, canvas.width, canvas.height)
-let plat1 = new Platform(110, 300, 50, 10, yellow, blue)
-let plat2 = new Platform(170, 250, 25, 10, yellow, blue)
-let plat3 = new Platform(355, 250, 25, 10, yellow, blue)
-let plat4 = new Platform(560, 260, 55, 10, yellow, blue)
-let plat5 = new Platform(675, 220, 25, 10, yellow, blue)
+let building1 = new Platform(0, 350, 100, canvas.height, "", blue);
+let building2 = new Platform(220, 200, 50, canvas.height);
+let building3 = new Platform(460, 300, 50, canvas.height);
+let building4 = new Platform(700, 180, canvas.width, canvas.height);
+let plat1 = new Platform(110, 300, 50, 10, yellow, blue);
+let plat2 = new Platform(170, 250, 25, 10, yellow, blue);
+let plat3 = new Platform(355, 250, 25, 10, yellow, blue);
+let plat4 = new Platform(560, 260, 55, 10, yellow, blue);
+let plat5 = new Platform(675, 220, 25, 10, yellow, blue);
 
 const keys = {
     right: {
-        pressed: false
+        pressed: false,
     },
     left: {
-        pressed: false
+        pressed: false,
     },
     space: {
-        pressed: false
-    }
-}
-
-
-
-
-//create movementHandler function
-// function movementHandler(e) {
-//     if (fritz.alive ) {
-//         switch (e.key) {
-//             case "a":
-//                 //move fritz left
-//                 fritz.x -= fritz.speed;
-//                 if (fritz.x < 0) {
-//                     fritz.x = 0;
-//                 }
-//                 break;
-//             case "d":
-//                 // move fritz right
-//                 fritz.x += fritz.speed;
-//                 if (fritz.x + fritz.width > canvas.width) {
-//                     winner();
-//                 }
-//                 break;
-//             case " ":
-//                 // make fritz jump        
-//                 if (fritz.jumps > 0){
-//                 fritz.y -= fritz.speed * 6;
-//                 }
-//                 fritz.jumps--
-//                 console.log (fritz.jumps)
-//                 break;
-//         }
-//     }
-// }
-// pass movementHandler to keypress eventListner
-// document.addEventListener("keydown", movementHandler);
-
+        pressed: false,
+    },
+};
 
 //click to play again
-document.addEventListener("click", () =>{
-    respawn()
-    topText.innerText = "Get Fritz home to his favorite pink ball!"
-    statusDisplay.innerText = "WASD to move, Spacebar to jump!"
-})
+document.addEventListener("click", () => {
+    respawn();
+    topText.innerText = "Get Fritz home to his favorite pink ball!";
+    statusDisplay.innerText = "WASD to move, Spacebar to jump!";
+});
 //respawn function
 function respawn() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -170,23 +133,25 @@ function endGame() {
 }
 //finish map win function
 function winner() {
-    fritz.alive = false;
-    statusDisplay.innerText = "YOU MADE IT! Time to curl up on the couch!";
-    topText.innerText = "Click anywhere to play again"
-    console.log(":)");
+    if(fritz.x > canvas.width - fritz.width){
+        fritz.x = canvas.width - fritz.width
+        fritz.alive = false;
+        statusDisplay.innerText = "YOU MADE IT! Time to curl up on the couch!";
+        topText.innerText = "Click anywhere to play again";
+        console.log(":)");
+    }
 }
 //Ft to Home function
-function homeTrack (){
-    distance = canvas.width - (fritz.x + fritz.width - 5)
-    if(distance <= 0){
-        distance = 0
+function homeTrack() {
+    distance = canvas.width - (fritz.x + fritz.width - 5);
+    if (distance <= 0) {
+        distance = 0;
     }
-    homeText.innerText = `${distance} Ft to Home`
+    homeText.innerText = `${distance} Ft to Home`;
 }
 
-
 //draw the house
-function house(){
+function house() {
     //main square
     ctx.lineWidth = 2;
     ctx.fillStyle = yellow;
@@ -194,22 +159,22 @@ function house(){
     ctx.strokeRect(752, 125, 55, 54);
     ctx.fillRect(752, 125, 55, 54);
     //roof
-    ctx.fillStyle = "#D0693E"
+    ctx.fillStyle = "#D0693E";
     ctx.beginPath();
     ctx.moveTo(775, 100);
     ctx.lineTo(740, 125);
     ctx.lineTo(800, 125);
-    ctx.lineTo(810, 100)
+    ctx.lineTo(810, 100);
     //roof styling
     ctx.fill();
     ctx.beginPath();
     ctx.moveTo(785, 100);
     ctx.lineTo(750, 125);
-    ctx.stroke()
+    ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(800, 100);
     ctx.lineTo(765, 125);
-    ctx.stroke()
+    ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(815, 100);
     ctx.lineTo(780, 125);
@@ -218,7 +183,7 @@ function house(){
     ctx.strokeStyle = "black";
     ctx.strokeRect(782, 140, 22, 38);
     ctx.fillStyle = "#E4DECB";
-    ctx.fillRect(782, 140, 22, 38)
+    ctx.fillRect(782, 140, 22, 38);
     //doorknob
     ctx.beginPath();
     ctx.arc(786, 160, 2, 0, 2 * Math.PI);
@@ -232,22 +197,13 @@ function house(){
 
 //add collision to stop fritz from falling when on platform
 function platformCheckY(fritz, plat) {
-    if (fritz.y > plat.y - fritz.height && fritz.y < plat.y && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width - 5){
-        fritz.y = plat.y - fritz.height
+    if (fritz.y + fritz.height <= plat.y && fritz.y + fritz.height + fritz.velocity.y >= plat.y && fritz.x + fritz.width >= plat.x && fritz.x <= plat.x + plat.width) {
         fritz.velocity.y = 0
-        fritz.jumps = 1
-    }else if (fritz.y > plat.y + plat.height && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width){
-        fritz.y = plat.y + plat.height
+    }else if(fritz.x < 0){
+        fritz.x = 0
     }
 }
-function platformCheckX(fritz, plat) {
-    if(fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width && fritz.y < plat.y + fritz.height && fritz.y > plat.y + plat.height){
-        fritz.x = plat.x - fritz.width
-    // }else if(fritz.y > plat.y){
-    //     fritz.x = fritz.x
-    }
-}
-
+ 
 
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60);
@@ -255,81 +211,73 @@ const gameLoopInterval = setInterval(gameLoop, 60);
 function gameLoop() {
     //redraw canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     //render fritz and all platforms
-    building1.makeBuilding()
-    building2.makeBuilding()
-    building3.makeBuilding()
-    building4.makeBuilding()
-    plat1.makePlat()
-    plat2.makePlat()
-    plat3.makePlat()
-    plat4.makePlat()
-    plat5.makePlat()
-    house()
+    building1.makeBuilding();
+    building2.makeBuilding();
+    building3.makeBuilding();
+    building4.makeBuilding();
+    plat1.makePlat();
+    plat2.makePlat();
+    plat3.makePlat();
+    plat4.makePlat();
+    plat5.makePlat();
+    house();
     fritz.update();
-   
+    //movement logic
+    if (keys.right.pressed) {
+        fritz.velocity.x = 10
+    }else if (keys.left.pressed){
+        fritz.velocity.x = -10
+    }else if (keys.space.pressed){
+        fritz.velocity.y = -10
+    }
+    else {
+        fritz.velocity.x = 0
+    }
     //platform collision checks
-    platformCheckY(fritz, building1)
-    platformCheckY(fritz, building2)
-    platformCheckY(fritz, building3)
-    platformCheckY(fritz, building4)
-    platformCheckY(fritz, plat1)
-    platformCheckY(fritz, plat2)
-    platformCheckY(fritz, plat3)
-    platformCheckY(fritz, plat4)
-    platformCheckY(fritz, plat5)
-    platformCheckX(fritz, building2)
-    platformCheckX(fritz, building3)
-    platformCheckX(fritz, building4)
-    platformCheckX(fritz, plat1)
-    platformCheckX(fritz, plat2)
-    platformCheckX(fritz, plat3)
-    platformCheckX(fritz, plat4)
-    platformCheckX(fritz, plat5)
-    //gravity
+    platformCheckY(fritz, building1);
+    platformCheckY(fritz, building2);
+    platformCheckY(fritz, building3);
+    platformCheckY(fritz, building4);
+    platformCheckY(fritz, plat1);
+    platformCheckY(fritz, plat2);
+    platformCheckY(fritz, plat3);
+    platformCheckY(fritz, plat4);
+    platformCheckY(fritz, plat5);
     if (fritz.y > canvas.height) {
         endGame();
     }
-    homeTrack()
-
+    homeTrack();
+    winner();
 }
 gameLoop();
 
 addEventListener("keydown", ({keyCode}) => {
     switch (keyCode) {
         case 65:
-            console.log("left")
-            fritz.velocity.x -= 10
-            keys.left.pressed = true
-            break
+            keys.left.pressed = true;
+            break;
         case 68:
-            fritz.velocity.x += 10
-            keys.right.pressed = true
-            break
-        case 32: 
-            if (keys.space.pressed = false){
-                fritz.velocity.y -= 50
-                keys.space.pressed = true
+            keys.right.pressed = true;
+            break;
+        case 87:
+            if(fritz.alive){
+                keys.space.pressed = true;
             }
-            break
+            break;
     }
-})
-addEventListener("keyup", ({keyCode}) => {
+});
+addEventListener("keyup", ({ keyCode }) => {
     switch (keyCode) {
         case 65:
-            fritz.velocity.x = 0
-            keys.left.pressed = false
-            break
+            keys.left.pressed = false;
+            break;
         case 68:
-            //right
-            fritz.velocity.x = 0
-            keys.right.pressed = false
-            break
-        case 32: 
-            fritz.velocity.y = 0
-            keys.space.pressed = false
-            break
+            keys.right.pressed = false;
+            break;
+        case 87:
+            keys.space.pressed = false;
+            break;
     }
-})
-
+});
