@@ -114,7 +114,7 @@ let building4 = new Platform(700, 180, canvas.width, canvas.height)
 let plat1 = new Platform(110, 310, 50, 13, yellow, blue)
 let plat2 = new Platform(170, 250, 25, 15, yellow, blue)
 let plat3 = new Platform(355, 250, 25, 15, yellow, blue)
-let plat4 = new Platform(570, 260, 55, 12, yellow, blue)
+let plat4 = new Platform(560, 260, 55, 12, yellow, blue)
 let plat5 = new Platform(675, 220, 25, 12, yellow, blue)
 
 
@@ -288,10 +288,12 @@ function platformCheckY(fritz, plat) {
     if (fritz.y > plat.y - fritz.height && fritz.y < plat.y && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width - 5){
         fritz.y = plat.y - fritz.height
         fritz.gravitySpeed = 0.05
+    }else if (fritz.y > plat.y + plat.height && fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width){
+        fritz.y = plat.y + plat.height
     }
 }
 function platformCheckX(fritz, plat) {
-    if(fritz.x > plat.x + fritz.width && fritz.x < plat.x + plat.width && fritz.y < plat.y + fritz.height && fritz.y > plat.y + plat.height){
+    if(fritz.x > plat.x - fritz.width && fritz.x < plat.x + plat.width && fritz.y < plat.y + fritz.height && fritz.y > plat.y + plat.height){
         fritz.x = plat.x - fritz.width
     // }else if(fritz.y > plat.y){
     //     fritz.x = fritz.x
