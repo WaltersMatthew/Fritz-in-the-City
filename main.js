@@ -100,10 +100,6 @@ platforms.push(plat2)
 platforms.push(plat3)
 platforms.push(plat4)
 platforms.push(plat5)
-// console.log(platforms)
-building1.makeBuilding
-
-
 
 const keys = {
     right: {
@@ -112,7 +108,7 @@ const keys = {
     left: {
         pressed: false,
     },
-    space: {
+    up: {
         pressed: false,
     },
 };
@@ -225,7 +221,7 @@ function gameLoop() {
     } else if (keys.left.pressed) {
         fritz.velocity.x = -10;
         fritz.image.src = "./img/8bittyleft.png";
-    } else if (keys.space.pressed) {
+    } else if (keys.up.pressed) {
             fritz.velocity.y = -10;
     } else {
         fritz.velocity.x = 0;
@@ -265,7 +261,7 @@ addEventListener("keydown", ({ keyCode }) => {
                 keys.right.pressed = true;
                 break;
             case 87:
-                keys.space.pressed = true;
+                keys.up.pressed = true;
                 break;
         }
     }    
@@ -279,7 +275,7 @@ addEventListener("keyup", ({ keyCode }) => {
             keys.right.pressed = false;
             break;
         case 87:
-            keys.space.pressed = false;
+            keys.up.pressed = false;
             break;
     }
 });
