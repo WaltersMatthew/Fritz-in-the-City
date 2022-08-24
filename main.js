@@ -226,7 +226,7 @@ function gameLoop() {
         fritz.velocity.x = -10;
         fritz.image.src = "./img/8bittyleft.png";
     } else if (keys.space.pressed) {
-        fritz.velocity.y = -10;
+            fritz.velocity.y = -10;
     } else {
         fritz.velocity.x = 0;
     }
@@ -239,7 +239,6 @@ function gameLoop() {
             fritz.x + 10 <= platforms[i].x + platforms[i].width)
             {
                 fritz.velocity.y = 0; 
-                console.log("on plat")
         } else if (fritz.x < 0) {
             fritz.x = 0;
         } else if (fritz.y < 0) {
