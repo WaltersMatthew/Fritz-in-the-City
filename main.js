@@ -14,6 +14,12 @@ const border = "#B7CF6C";
 const back = "#617659";
 
 const gravity = 2;
+
+const rightSprite = "./img/8bitty.png"
+const leftSprite = "./img/8bittyleft.png"
+const jumpRightSprite = "./img/8bittyjump-1.png"
+const jumpLeftSprite = "./img/8bittyjumpleft.png"
+let currentSprite = rightSprite
 //make class for Fritz
 class Fritz {
     constructor(x, y, width, height, color, type) {
@@ -28,6 +34,7 @@ class Fritz {
             this.image.src = color;
         }
         this.alive = true;
+        this.angle = 0;
         this.velocity = {
             x: 0,
             y: 0,
@@ -38,6 +45,7 @@ class Fritz {
         this.y += this.velocity.y;
         this.velocity.y += gravity;
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+
     }
 }
 //class for platforms and buildings
@@ -80,7 +88,7 @@ class Platform {
     }
 }
 //create fritz and buildings
-let fritz = new Fritz(25, 250, 65, 25, "./img/8bitty.png", "image");
+let fritz = new Fritz(25, 250, 65, 25, currentSprite, "image");
 let building1 = new Platform(0, 305, 90, canvas.height, fill, border);
 let building2 = new Platform(220, 130, 50, 65, "#E78DA2", "#FCBEA3");
 let building3 = new Platform(444, 320, 89, canvas.height, fill, border);
@@ -210,19 +218,27 @@ function gameLoop() {
         }     
     }
 
-    //render house and fritz. FRITZ LAST!!!
+    //render house
     house();
-    fritz.update();
-
-    //movement logic
+    
+    //movement and sprite swap logic
     if (keys.right.pressed) {
         fritz.velocity.x = 10;
-        fritz.image.src = "./img/8bitty.png";
+        fritz.image.src = rightSprite;
+        currentSprite = rightSprite
     } else if (keys.left.pressed) {
         fritz.velocity.x = -10;
-        fritz.image.src = "./img/8bittyleft.png";
+        fritz.image.src = leftSprite;
+        currentSprite = leftSprite
     } else if (keys.up.pressed) {
-            fritz.velocity.y = -10;
+        fritz.velocity.y = -10;
+        if(fritz.velocity.y < 0 && currentSprite == rightSprite){
+            fritz.image.src = jumpRightSprite
+            currentSprite = jumpRightSprite
+        }else if(fritz.velocity.y < 0 && currentSprite == leftSprite){
+            fritz.image.src = jumpLeftSprite;
+            currentSprite = jumpLeftSprite
+        }
     } else {
         fritz.velocity.x = 0;
     }
@@ -241,15 +257,20 @@ function gameLoop() {
             fritz.y = 0;
         }
     }
-
-
+    //deathpit condition
     if (fritz.y > canvas.height) {
         endGame();
     }
+    //ft to home tracker
     homeTrack();
+    //stop game on win condition
     winner();
+    //draw Fritz. MUST GO LAST!!
+    fritz.update();
 }
 gameLoop();
+
+//controller event listeners (key down and up)
 
 addEventListener("keydown", ({ keyCode }) => {
     if(fritz.alive){
@@ -270,9 +291,15 @@ addEventListener("keyup", ({ keyCode }) => {
     switch (keyCode) {
         case 65:
             keys.left.pressed = false;
+            if(currentSprite == jumpLeftSprite){
+                fritz.image.src = leftSprite
+            }
             break;
         case 68:
             keys.right.pressed = false;
+            if(currentSprite == jumpRightSprite){
+                fritz.image.src = rightSprite
+            }
             break;
         case 87:
             keys.up.pressed = false;
