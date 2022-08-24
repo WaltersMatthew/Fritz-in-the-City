@@ -90,6 +90,20 @@ let plat2 = new Platform(175, 200, 25, 10, "#FCBEA3", "#E88D9D");
 let plat3 = new Platform(345, 240, 25, 10, back, fill);
 let plat4 = new Platform(560, 260, 55, 10, back, fill);
 let plat5 = new Platform(650, 220, 40, 10, "#E88D9D", "#C66A87");
+const platforms = []
+platforms.push(building1)
+platforms.push(building2)
+platforms.push(building3)
+platforms.push(building4)
+platforms.push(plat1)
+platforms.push(plat2)
+platforms.push(plat3)
+platforms.push(plat4)
+platforms.push(plat5)
+// console.log(platforms)
+building1.makeBuilding
+
+
 
 const keys = {
     right: {
@@ -184,41 +198,26 @@ function house() {
     ctx.fill();
 }
 
-//add collision to stop fritz from falling when on platform
-function platformCheck(fritz, plat) {
-    if (
-        fritz.y + fritz.height <= plat.y &&
-        fritz.y + fritz.height + fritz.velocity.y >= plat.y &&
-        fritz.x + fritz.width - 20 >= plat.x &&
-        fritz.x + 10 <= plat.x + plat.width
-    ) {
-        fritz.velocity.y = 0;
-    } else if (fritz.x < 0) {
-        fritz.x = 0;
-    } else if (fritz.y < 0) {
-        fritz.y = 0;
-    }
-}
-
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60);
-
 function gameLoop() {
     //redraw canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    //render fritz and all platforms
-    building1.makeBuilding();
-    building2.makeBuilding();
-    building3.makeBuilding();
-    building4.makeBuilding();
-    plat1.makePlat();
-    plat2.makePlat();
-    plat3.makePlat();
-    plat4.makePlat();
-    plat5.makePlat();
+    //render all platforms
+    for (let i = 0; i < platforms.length; i++) {
+        if(i < 4){
+            platforms[i].makeBuilding()
+        }
+        else{
+            platforms[i].makePlat()
+        }     
+    }
+
+    //render house and fritz. FRITZ LAST!!!
     house();
     fritz.update();
+
     //movement logic
     if (keys.right.pressed) {
         fritz.velocity.x = 10;
@@ -232,15 +231,23 @@ function gameLoop() {
         fritz.velocity.x = 0;
     }
     //platform collision checks
-    platformCheck(fritz, building1);
-    platformCheck(fritz, building2);
-    platformCheck(fritz, building3);
-    platformCheck(fritz, building4);
-    platformCheck(fritz, plat1);
-    platformCheck(fritz, plat2);
-    platformCheck(fritz, plat3);
-    platformCheck(fritz, plat4);
-    platformCheck(fritz, plat5);
+    for (let i = 0; i < platforms.length; i++) {      
+        if (
+            fritz.y + fritz.height <= platforms[i].y &&
+            fritz.y + fritz.height + fritz.velocity.y >= platforms[i].y &&
+            fritz.x + fritz.width - 20 >= platforms[i].x &&
+            fritz.x + 10 <= platforms[i].x + platforms[i].width)
+            {
+                fritz.velocity.y = 0; 
+                console.log("on plat")
+        } else if (fritz.x < 0) {
+            fritz.x = 0;
+        } else if (fritz.y < 0) {
+            fritz.y = 0;
+        }
+    }
+
+
     if (fritz.y > canvas.height) {
         endGame();
     }
@@ -250,17 +257,19 @@ function gameLoop() {
 gameLoop();
 
 addEventListener("keydown", ({ keyCode }) => {
-    switch (keyCode) {
-        case 65:
-            keys.left.pressed = true;
-            break;
-        case 68:
-            keys.right.pressed = true;
-            break;
-        case 87:
-            keys.space.pressed = true;
-            break;
-    }
+    if(fritz.alive){
+        switch (keyCode) {
+            case 65:
+                keys.left.pressed = true;
+                break;
+            case 68:
+                keys.right.pressed = true;
+                break;
+            case 87:
+                keys.space.pressed = true;
+                break;
+        }
+    }    
 });
 addEventListener("keyup", ({ keyCode }) => {
     switch (keyCode) {
