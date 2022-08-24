@@ -121,7 +121,7 @@ const keys = {
 document.addEventListener("click", () => {
     respawn();
     topText.innerText = "Get Fritz home to his favorite pink ball!";
-    statusDisplay.innerText = "WASD to move, Spacebar to jump!";
+    statusDisplay.innerText = "A = left, D = right, W = jump!";
 });
 //respawn function
 function respawn() {
