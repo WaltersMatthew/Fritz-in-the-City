@@ -24,13 +24,12 @@ After a long day chasing squirrels, Fritz is lost in the city, and far from his 
     - Render a cityscape gameplay background
     - Render a Fritz dachshund character that can move around the screen
     - Render Fritz's house as an end goal
-    - Have WASD movement controls and a jump button
+    - Have WASD movement controls
     - Implement gravity to bring Fritz back to the ground
     - If Fritz falls between buildings, the game restarts
 ---
 # Stretch Goals
 
-    - Dig functionality and tall obstacles to dig under
     - Scrolling screen and extend level, adding more platforms and buildings
     - Update Fritz styling to 8-bit sprite
     - Additional sprites for jump, run, and fall actions
@@ -38,8 +37,8 @@ After a long day chasing squirrels, Fritz is lost in the city, and far from his 
 ---
 # Potential Roadblocks
 
-    - Allow multiple key inputs simultaneously
+    - Allow multiple key inputs simultaneously✔️
     - Jump function ✔️
-    - Implementing gravity
+    - Implementing gravity✔️
     - Figuring out scroll functionality
     - Updating from a single rectangle to sprites for movement

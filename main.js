@@ -28,26 +28,16 @@ class Fritz {
             this.image.src = color;
         }
         this.alive = true;
-        this.speed = 10;
         this.velocity = {
             x: 0,
             y: 0,
         };
     }
-    render() {
-        // ctx.lineWidth = 5;
-        // ctx.strokeStyle = "black";
-        // ctx.strokeRect(this.x, this.y, this.width, this.height);
-        // ctx.fillStyle = this.color;
-        // ctx.fillRect(this.x, this.y, this.width, this.height);
-    }
-    
     update() {
-        // this.render();
         this.x += this.velocity.x;
         this.y += this.velocity.y;
         this.velocity.y += gravity;
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
 }
 //class for platforms and buildings
@@ -62,10 +52,7 @@ class Platform {
     }
     // makeBuilding(x, y, width, height)
     makeBuilding() {
-        ctx.globalCompositeOperation = "source-over";
         ctx.lineWidth = 5;
-        // ctx.strokeStyle = fill;
-        // ctx.strokeRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = this.borderColor;
         ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = this.fillColor;
@@ -73,7 +60,7 @@ class Platform {
         ctx.fillRect(this.x + 5, this.y + 5, this.width - 10, 10);
         ctx.fillRect(this.x + 5, this.y + 25, this.width - 10, 10);
         ctx.fillRect(this.x + 5, this.y + 45, this.width - 10, 10);
-        if(this.x > 350){
+        if (this.x > 350) {
             ctx.fillRect(this.x + 5, this.y + 65, this.width - 10, 10);
             ctx.fillRect(this.x + 5, this.y + 105, this.width - 10, 10);
             ctx.fillRect(this.x + 5, this.y + 125, this.width - 10, 10);
@@ -86,8 +73,6 @@ class Platform {
         }
     }
     makePlat() {
-        ctx.globalCompositeOperation = "source-over";
-
         ctx.strokeStyle = this.borderColor;
         ctx.strokeRect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = this.fillColor;
@@ -115,7 +100,7 @@ const keys = {
     },
     space: {
         pressed: false,
-    }
+    },
 };
 
 //click to play again
@@ -127,7 +112,7 @@ document.addEventListener("click", () => {
 //respawn function
 function respawn() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    fritz = new Fritz(25, 250, 65, 25, "./img/8bitty.png", "image")
+    fritz = new Fritz(25, 250, 65, 25, "./img/8bitty.png", "image");
 }
 //endgame function
 function endGame() {
@@ -137,8 +122,8 @@ function endGame() {
 }
 //finish map win function
 function winner() {
-    if(fritz.x > canvas.width - fritz.width){
-        fritz.x = canvas.width - fritz.width
+    if (fritz.x > canvas.width - fritz.width) {
+        fritz.x = canvas.width - fritz.width;
         fritz.alive = false;
         statusDisplay.innerText = "YOU MADE IT! Time to curl up on the couch!";
         topText.innerText = "Click anywhere to play again";
@@ -201,15 +186,19 @@ function house() {
 
 //add collision to stop fritz from falling when on platform
 function platformCheck(fritz, plat) {
-    if (fritz.y + fritz.height <= plat.y && fritz.y + fritz.height + fritz.velocity.y >= plat.y && fritz.x + fritz.width -20 >= plat.x && fritz.x + 10 <= plat.x + plat.width) {
-        fritz.velocity.y = 0
-    }else if(fritz.x < 0){
-        fritz.x = 0
-    }else if(fritz.y < 0){
-        fritz.y = 0
+    if (
+        fritz.y + fritz.height <= plat.y &&
+        fritz.y + fritz.height + fritz.velocity.y >= plat.y &&
+        fritz.x + fritz.width - 20 >= plat.x &&
+        fritz.x + 10 <= plat.x + plat.width
+    ) {
+        fritz.velocity.y = 0;
+    } else if (fritz.x < 0) {
+        fritz.x = 0;
+    } else if (fritz.y < 0) {
+        fritz.y = 0;
     }
 }
- 
 
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60);
@@ -232,16 +221,15 @@ function gameLoop() {
     fritz.update();
     //movement logic
     if (keys.right.pressed) {
-        fritz.velocity.x = 10
-        fritz.image.src = "./img/8bitty.png"
-    }else if (keys.left.pressed){
-        fritz.velocity.x = -10
-        fritz.image.src = "./img/8bittyleft.png"
-    }else if (keys.space.pressed){
-        fritz.velocity.y = -10
-    }
-    else {
-        fritz.velocity.x = 0
+        fritz.velocity.x = 10;
+        fritz.image.src = "./img/8bitty.png";
+    } else if (keys.left.pressed) {
+        fritz.velocity.x = -10;
+        fritz.image.src = "./img/8bittyleft.png";
+    } else if (keys.space.pressed) {
+        fritz.velocity.y = -10;
+    } else {
+        fritz.velocity.x = 0;
     }
     //platform collision checks
     platformCheck(fritz, building1);
@@ -261,7 +249,7 @@ function gameLoop() {
 }
 gameLoop();
 
-addEventListener("keydown", ({keyCode}) => {
+addEventListener("keydown", ({ keyCode }) => {
     switch (keyCode) {
         case 65:
             keys.left.pressed = true;
