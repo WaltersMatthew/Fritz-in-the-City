@@ -200,11 +200,13 @@ function house() {
 }
 
 //add collision to stop fritz from falling when on platform
-function platformCheckY(fritz, plat) {
+function platformCheck(fritz, plat) {
     if (fritz.y + fritz.height <= plat.y && fritz.y + fritz.height + fritz.velocity.y >= plat.y && fritz.x + fritz.width -20 >= plat.x && fritz.x + 10 <= plat.x + plat.width) {
         fritz.velocity.y = 0
     }else if(fritz.x < 0){
         fritz.x = 0
+    }else if(fritz.y < 0){
+        fritz.y = 0
     }
 }
  
@@ -231,8 +233,10 @@ function gameLoop() {
     //movement logic
     if (keys.right.pressed) {
         fritz.velocity.x = 10
+        fritz.image.src = "./img/8bitty.png"
     }else if (keys.left.pressed){
         fritz.velocity.x = -10
+        fritz.image.src = "./img/8bittyleft.png"
     }else if (keys.space.pressed){
         fritz.velocity.y = -10
     }
@@ -240,15 +244,15 @@ function gameLoop() {
         fritz.velocity.x = 0
     }
     //platform collision checks
-    platformCheckY(fritz, building1);
-    platformCheckY(fritz, building2);
-    platformCheckY(fritz, building3);
-    platformCheckY(fritz, building4);
-    platformCheckY(fritz, plat1);
-    platformCheckY(fritz, plat2);
-    platformCheckY(fritz, plat3);
-    platformCheckY(fritz, plat4);
-    platformCheckY(fritz, plat5);
+    platformCheck(fritz, building1);
+    platformCheck(fritz, building2);
+    platformCheck(fritz, building3);
+    platformCheck(fritz, building4);
+    platformCheck(fritz, plat1);
+    platformCheck(fritz, plat2);
+    platformCheck(fritz, plat3);
+    platformCheck(fritz, plat4);
+    platformCheck(fritz, plat5);
     if (fritz.y > canvas.height) {
         endGame();
     }
