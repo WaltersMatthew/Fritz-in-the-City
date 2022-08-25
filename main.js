@@ -173,14 +173,30 @@ class Platform {
         ctx.fill();
     }
 }
+class Building {
+    constructor(x, y, width, height, src, type){
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.src = src;
+        this.type = type;
+        if (type == "image") {
+            this.image = new Image();
+            this.image.src = src;
+        }
+    }
+    buildingRender(){
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+}
 //create fritz and buildings
 let fritz = new Fritz(25, 250, 65, 25, currentSprite, "image");
-// let background = new Background(0, 0, 1800, canvas.height, "./img/newcity.gif", "image")
-let building1 = new Platform(0, 305, 250, canvas.height, fill, border);
-let building2 = new Platform(520, 130, 50, 65, "#E78DA2", "#FCBEA3");
-let building3 = new Platform(744, 320, 89, canvas.height, fill, border);
+let building1 = new Building(0, 305, 250, canvas.height,"./img/building.png", "image");
+let building3 = new Building(744, 320, 89, canvas.height, "./img/building2.png", "image");
+let building5 = new Building(1550, 180, 350, canvas.height, "./img/building.png", "image");
+let building2 = new Platform(530, 110, 50, 65, "#E78DA2", "#FCBEA3");
 let building4 = new Platform(1350, 110, 50, 65, "#E78DA2", "#FCBEA3");
-let building5 = new Platform(1550, 180, 350, canvas.height, "#04151A", border);
 let plat1 = new Platform(325, 240, 40, 10, back, fill);
 let plat2 = new Platform(450, 200, 25, 10, "#FCBEA3", "#E88D9D");
 let plat3 = new Platform(680, 240, 25, 10, back, fill);
@@ -191,10 +207,10 @@ let house = new Platform(1700, 100, 200, 80, "yellow", "yellow")
 
 let platforms = []
 platforms.push(building1)
-platforms.push(building2)
 platforms.push(building3)
-platforms.push(building4)
 platforms.push(building5)
+platforms.push(building2)
+platforms.push(building4)
 platforms.push(plat1)
 platforms.push(plat2)
 platforms.push(plat3)
@@ -208,11 +224,11 @@ platforms.push(house)
 function reset(){
     //recreate fritz and buildings
     fritz = new Fritz(25, 250, 65, 25, currentSprite, "image");
-    building1 = new Platform(0, 305, 250, canvas.height, fill, border);
-    building2 = new Platform(520, 130, 50, 65, "#E78DA2", "#FCBEA3");
-    building3 = new Platform(744, 320, 89, canvas.height, fill, border);
+    building1 = new Building(0, 305, 250, canvas.height,"./img/building.png", "image");
+    building3 = new Building(744, 320, 89, canvas.height, "./img/building2.png", "image");
+    building5 = new Building(1550, 180, 350, canvas.height, "./img/building.png", "image");
+    building2 = new Platform(530, 110, 50, 65, "#E78DA2", "#FCBEA3");
     building4 = new Platform(1350, 110, 50, 65, "#E78DA2", "#FCBEA3");
-    building5 = new Platform(1550, 180, 350, canvas.height, "#04151A", border);
     plat1 = new Platform(325, 240, 40, 10, back, fill);
     plat2 = new Platform(450, 200, 25, 10, "#FCBEA3", "#E88D9D");
     plat3 = new Platform(680, 240, 25, 10, back, fill);
@@ -223,10 +239,10 @@ function reset(){
 
     platforms = []
     platforms.push(building1)
-    platforms.push(building2)
     platforms.push(building3)
-    platforms.push(building4)
     platforms.push(building5)
+    platforms.push(building2)
+    platforms.push(building4)
     platforms.push(plat1)
     platforms.push(plat2)
     platforms.push(plat3)
@@ -247,10 +263,11 @@ function respawn() {
     reset()
     scrollOffset = 0
     for (let i = 0; i < platforms.length; i++) {
-        if(i < 5){
+        if(i < 3){
+            platforms[i].buildingRender
+        }else if(i < 5){
             platforms[i].makeBuilding()
-        }
-        else if(i < 11){
+        }else if(i < 11){
             platforms[i].makePlat()
         }else{
             platforms[i].makeHouse()
@@ -291,10 +308,11 @@ function gameLoop() {
     // background.renderBG()
     //render all platforms
     for (let i = 0; i < platforms.length; i++) {
-        if(i < 5){
+        if(i < 3){
+            platforms[i].buildingRender()
+        }else if(i < 5){
             platforms[i].makeBuilding()
-        }
-        else if(i < 11){
+        }else if (i < 11){
             platforms[i].makePlat()
         }else{
             platforms[i].makeHouse()
