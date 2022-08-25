@@ -3,16 +3,11 @@ const canvas = document.querySelector("canvas");
 const statusDisplay = document.querySelector("#status");
 const homeText = document.querySelector("#homeText");
 const topText = document.querySelector("#topText");
-// const background = canvas.style.backgroundImage
 //get canvas context
 this.ctx = canvas.getContext("2d");
 //set canvas res to be same as window
 canvas.setAttribute("height", getComputedStyle(canvas)["height"]);
 canvas.setAttribute("width", getComputedStyle(canvas)["width"]);
-//color palette
-const fill = "#2A2D41";
-const border = "#B7CF6C";
-const back = "#617659";
 //gravity
 const gravity = 2;
 //const sprites
@@ -47,7 +42,6 @@ class Fritz {
             this.image.src = color;
         }
         this.alive = true;
-        this.angle = 0;
         this.velocity = {
             x: 0,
             y: 0,
@@ -224,7 +218,7 @@ function reset(){
     plat5 = new Platform(1050, 220, 40, 10, "./img/highPlat.png", "image");
     plat6 = new Platform(1200, 170, 50, 10, "./img/highestPlat.png", "image")
     house = new Platform(1700, 100, 200, 80, "yellow", "yellow")
-
+    //empty array and re-push original coordinates
     platforms = []
     platforms.push(building1)
     platforms.push(building3)
@@ -249,7 +243,7 @@ document.addEventListener("click", () => {
 function respawn() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     reset()
-    scrollOffset = 0
+    //loop platforms array to render
     for (let i = 0; i < platforms.length; i++) {
         if(i < 5){
             platforms[i].buildingRender()
@@ -289,9 +283,7 @@ const gameLoopInterval = setInterval(gameLoop, 60);
 function gameLoop() {
     //redraw canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //redner background
-    // background.renderBG()
-    //render all platforms
+    //loop platforms array to render all platforms
     for (let i = 0; i < platforms.length; i++) {
         if(i < 5){
             platforms[i].buildingRender()
