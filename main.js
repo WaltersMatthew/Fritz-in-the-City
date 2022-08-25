@@ -406,58 +406,13 @@ function winner() {
 }
 //Ft to Home function
 function homeTrack() {
-    distance = house.x - (fritz.x + fritz.width - 5);
+    distance = house.x - (fritz.x + fritz.width);
     if (distance <= 0) {
         distance = 0;
         winner();
     }
     homeText.innerText = `${distance} Ft to Home`;
 }
-
-//draw the house
-// function home() {
-//     //main square
-//     ctx.lineWidth = 2;
-//     ctx.fillStyle = "#FFFC40";
-//     ctx.strokeStyle = "black";
-//     ctx.strokeRect(this.x, 125, 55, 54);
-//     ctx.fillRect(this.x, 125, 55, 54);
-//     //roof
-//     ctx.fillStyle = "#D0693E";
-//     ctx.beginPath();
-//     ctx.moveTo(775, 100);
-//     ctx.lineTo(740, 125);
-//     ctx.lineTo(800, 125);
-//     ctx.lineTo(810, 100);
-//     //roof styling
-//     ctx.fill();
-//     ctx.beginPath();
-//     ctx.moveTo(785, 100);
-//     ctx.lineTo(750, 125);
-//     ctx.stroke();
-//     ctx.beginPath();
-//     ctx.moveTo(800, 100);
-//     ctx.lineTo(765, 125);
-//     ctx.stroke();
-//     ctx.beginPath();
-//     ctx.moveTo(815, 100);
-//     ctx.lineTo(780, 125);
-//     ctx.stroke();
-//     //door
-//     ctx.strokeStyle = "black";
-//     ctx.strokeRect(782, 140, 22, 38);
-//     ctx.fillStyle = "#E4DECB";
-//     ctx.fillRect(782, 140, 22, 38);
-//     //doorknob
-//     ctx.beginPath();
-//     ctx.arc(786, 160, 2, 0, 2 * Math.PI);
-//     ctx.stroke();
-//     //ball
-//     ctx.fillStyle = "hotpink";
-//     ctx.beginPath();
-//     ctx.arc(769, 172, 7, 0, 2 * Math.PI);
-//     ctx.fill();
-// }
 let scrollOffset = 0
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60);
@@ -476,9 +431,6 @@ function gameLoop() {
             platforms[i].makeHouse()
         }
     }
-
-    //render house
-    // home();
     
     //movement and sprite swap logic
     if (keys.right.pressed && fritz.x < 150){
