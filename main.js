@@ -75,6 +75,7 @@ class Platform {
             this.image.src = color;
         }
     }
+    //draw building func
     buildingRender(){
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         ctx.lineWidth = 1;
@@ -84,6 +85,7 @@ class Platform {
         ctx.lineTo(this.x + this.width, this.y)
         ctx.stroke()
     }    
+    //draw platform func
     platRender(){
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
         ctx.lineWidth = 0.5;
@@ -191,6 +193,7 @@ let plat5 = new Platform(1050, 220, 40, 10, "./img/highPlat.png", "image");
 let plat6 = new Platform(1200, 170, 50, 10, "./img/highestPlat.png", "image")
 let house = new Platform(1700, 100, 200, 80, "yellow", "yellow")
 
+//platforms array to loop for collision and rendering
 let platforms = []
 platforms.push(building1)
 platforms.push(building3)
@@ -205,8 +208,7 @@ platforms.push(plat5)
 platforms.push(plat6)
 platforms.push(house)
 
-
-//init function to reset entire game
+//function to reset entire game
 function reset(){
     //recreate fritz and buildings
     fritz = new Fritz(25, 250, 65, 25, currentSprite, "image");
@@ -282,7 +284,6 @@ function homeTrack() {
     homeText.innerText = `${distance} Ft to Home`;
 }
 
-let scrollOffset = 0
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60);
 function gameLoop() {
@@ -317,32 +318,23 @@ function gameLoop() {
 
     //up    
     } else if (keys.up.pressed) {
-        let jumpCount = 1
-        if (jumpCount > 0){
-            fritz.velocity.y = -15;
-            if(currentSprite == rightSprite){
-                fritz.image.src = jumpRightSprite
-                currentSprite = jumpRightSprite
-                }else if(currentSprite == leftSprite){
-                fritz.image.src = jumpLeftSprite;
-                currentSprite = jumpLeftSprite
-                }
-        else if (jumpCount == 0){
-            keys.up.pressed = false
-            }    
-            jumpCount--
-            console.log(jumpCount)
+        fritz.velocity.y = -15;
+        if(currentSprite == rightSprite){
+            fritz.image.src = jumpRightSprite
+            currentSprite = jumpRightSprite
+            }else if(currentSprite == leftSprite){
+            fritz.image.src = jumpLeftSprite;
+            currentSprite = jumpLeftSprite
+            }
         }    
-    } else {
+    else {
         fritz.velocity.x = 0;
         for (let i = 0; i < platforms.length; i++) {
             if (keys.right.pressed){
                 fritz.image.src = rightSprite
-                scrollOffset += 1
                 platforms[i].x -= 10
             }else if (keys.left.pressed) {
                 fritz.image.src = leftSprite
-                scrollOffset -= 1
                 platforms[i].x += 10
             }
         }
@@ -358,7 +350,6 @@ function gameLoop() {
             fritz.x + 10 <= platforms[i].x + platforms[i].width)
             {
                 fritz.velocity.y = 0;
-                jumpCount = 1 
                 if(currentSprite == jumpLeftSprite){
                     fritz.image.src = leftSprite
                     currentSprite = leftSprite
