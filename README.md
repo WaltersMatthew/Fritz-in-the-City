@@ -30,9 +30,10 @@ After a long day chasing squirrels, Fritz is lost in the city, and far from his 
 ---
 # Stretch Goals
 
-    - Scrolling screen and extend level, adding more platforms and buildings
+    - Scrolling platforms and extend level, adding more platforms and buildings
     - Update Fritz styling to 8-bit sprite
     - Additional sprites for jump, run, and fall actions
+    - Implement sound cues to go with various actions
     - Add cat villains as obstacles to jump over
 ---
 # Potential Roadblocks
@@ -55,4 +56,4 @@ After a long day chasing squirrels, Fritz is lost in the city, and far from his 
    
     -Background image: Couldn't find orginal artist (https://tinyurl.com/y4be9m9z)
 
-    
+    -Jump Sound Effect from Pixabay   

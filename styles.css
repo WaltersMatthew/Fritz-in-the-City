@@ -8,7 +8,7 @@ canvas {
     height: 100%;
     background-color: #666;
     background-image: url('./img/newcity.gif');
-    background-size: cover;
+    background-size:contain;
 }
 
 #container {

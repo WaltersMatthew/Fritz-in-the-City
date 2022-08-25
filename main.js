@@ -3,6 +3,7 @@ const canvas = document.querySelector("canvas");
 const statusDisplay = document.querySelector("#status");
 const homeText = document.querySelector("#homeText");
 const topText = document.querySelector("#topText");
+// const background = canvas.style.backgroundImage
 //get canvas context
 this.ctx = canvas.getContext("2d");
 //set canvas res to be same as window
@@ -32,6 +33,7 @@ const keys = {
         pressed: false,
     },
 };
+//Character class
 class Fritz {
     constructor(x, y, width, height, color, type) {
         this.x = x;
@@ -173,11 +175,12 @@ class Platform {
 }
 //create fritz and buildings
 let fritz = new Fritz(25, 250, 65, 25, currentSprite, "image");
+// let background = new Background(0, 0, 1800, canvas.height, "./img/newcity.gif", "image")
 let building1 = new Platform(0, 305, 250, canvas.height, fill, border);
 let building2 = new Platform(520, 130, 50, 65, "#E78DA2", "#FCBEA3");
 let building3 = new Platform(744, 320, 89, canvas.height, fill, border);
 let building4 = new Platform(1350, 110, 50, 65, "#E78DA2", "#FCBEA3");
-let building5 = new Platform(1550, 180, 350, canvas.height, fill, "#617659");
+let building5 = new Platform(1550, 180, 350, canvas.height, "#04151A", border);
 let plat1 = new Platform(325, 240, 40, 10, back, fill);
 let plat2 = new Platform(450, 200, 25, 10, "#FCBEA3", "#E88D9D");
 let plat3 = new Platform(680, 240, 25, 10, back, fill);
@@ -209,7 +212,7 @@ function reset(){
     building2 = new Platform(520, 130, 50, 65, "#E78DA2", "#FCBEA3");
     building3 = new Platform(744, 320, 89, canvas.height, fill, border);
     building4 = new Platform(1350, 110, 50, 65, "#E78DA2", "#FCBEA3");
-    building5 = new Platform(1550, 180, 350, canvas.height, fill, "#617659");
+    building5 = new Platform(1550, 180, 350, canvas.height, "#04151A", border);
     plat1 = new Platform(325, 240, 40, 10, back, fill);
     plat2 = new Platform(450, 200, 25, 10, "#FCBEA3", "#E88D9D");
     plat3 = new Platform(680, 240, 25, 10, back, fill);
@@ -265,9 +268,9 @@ function winner() {
     if (homeText.innerText === "0 Ft to Home"){
         fritz.alive = false;
         statusDisplay.innerText = "YOU MADE IT! Time to curl up on the couch!";
-        topText.innerText = "Click anywhere to play again";
-    }
-}
+        topText.innerText = "Click anywhere to play again";   
+        }
+} 
 //Ft to Home function
 function homeTrack() {
     distance = house.x - (fritz.x + fritz.width);
@@ -277,13 +280,15 @@ function homeTrack() {
     }
     homeText.innerText = `${distance} Ft to Home`;
 }
+
 let scrollOffset = 0
 //gameplay loop
 const gameLoopInterval = setInterval(gameLoop, 60);
 function gameLoop() {
     //redraw canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    //redner background
+    // background.renderBG()
     //render all platforms
     for (let i = 0; i < platforms.length; i++) {
         if(i < 5){
@@ -295,7 +300,7 @@ function gameLoop() {
             platforms[i].makeHouse()
         }
     }
-    
+ 
     //movement and sprite swap logic
 
     //right
@@ -312,14 +317,22 @@ function gameLoop() {
 
     //up    
     } else if (keys.up.pressed) {
-        fritz.velocity.y = -10;
-        if(currentSprite == rightSprite){
-            fritz.image.src = jumpRightSprite
-            currentSprite = jumpRightSprite
-        }else if(currentSprite == leftSprite){
-            fritz.image.src = jumpLeftSprite;
-            currentSprite = jumpLeftSprite
-        }
+        let jumpCount = 1
+        if (jumpCount > 0){
+            fritz.velocity.y = -15;
+            if(currentSprite == rightSprite){
+                fritz.image.src = jumpRightSprite
+                currentSprite = jumpRightSprite
+                }else if(currentSprite == leftSprite){
+                fritz.image.src = jumpLeftSprite;
+                currentSprite = jumpLeftSprite
+                }
+        else if (jumpCount == 0){
+            keys.up.pressed = false
+            }    
+            jumpCount--
+            console.log(jumpCount)
+        }    
     } else {
         fritz.velocity.x = 0;
         for (let i = 0; i < platforms.length; i++) {
@@ -344,7 +357,8 @@ function gameLoop() {
             fritz.x + fritz.width - 20 >= platforms[i].x &&
             fritz.x + 10 <= platforms[i].x + platforms[i].width)
             {
-                fritz.velocity.y = 0; 
+                fritz.velocity.y = 0;
+                jumpCount = 1 
                 if(currentSprite == jumpLeftSprite){
                     fritz.image.src = leftSprite
                     currentSprite = leftSprite
@@ -369,7 +383,6 @@ function gameLoop() {
     //draw Fritz. MUST GO LAST!!
     fritz.update();
 }
-// gameLoop();
 
 //controller event listeners (key down and up)
 
@@ -385,8 +398,9 @@ addEventListener("keydown", ({ keyCode }) => {
             case 87:
                 keys.up.pressed = true;
                 break;
+        
         }
-    }    
+    }
 });
 addEventListener("keyup", ({ keyCode }) => {
     switch (keyCode) {
