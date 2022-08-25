@@ -42,3 +42,17 @@ After a long day chasing squirrels, Fritz is lost in the city, and far from his 
     - Implementing gravity✔️
     - Figuring out scroll functionality
     - Updating from a single rectangle to sprites for movement
+---
+## Resources
+
+    -Gravity: W3 schools (tinyurl.com/yu3j629t)
+    
+    -Basic Key controls: W3 schools (tinyurl.com/3r2rxsw9)
+
+    -Scrolling and advanced key controls: Chris Courses on Youtube (https://www.youtube.com/watch?v=4q2vvZn5aoo)
+    
+    -Fritz sprite: @Tio D on freepik.com
+   
+    -Background image: Couldn't find orginal artist (https://tinyurl.com/y4be9m9z)
+
+    
