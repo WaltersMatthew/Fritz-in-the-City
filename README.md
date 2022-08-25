@@ -41,8 +41,8 @@ After a long day chasing squirrels, Fritz is lost in the city, and far from his 
     - Allow multiple key inputs simultaneously✔️
     - Jump function ✔️
     - Implementing gravity✔️
-    - Figuring out scroll functionality
-    - Updating from a single rectangle to sprites for movement
+    - Figuring out scroll functionality✔️
+    - Updating from a single rectangle to sprite for movement✔️
 ---
 ## Resources
 
@@ -55,5 +55,3 @@ After a long day chasing squirrels, Fritz is lost in the city, and far from his 
     -Fritz sprite: @Tio D on freepik.com
    
     -Background image: Couldn't find orginal artist (https://tinyurl.com/y4be9m9z)
-
-    -Jump Sound Effect from Pixabay   
