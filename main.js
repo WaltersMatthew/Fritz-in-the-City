@@ -182,7 +182,7 @@ let plat2 = new Platform(450, 200, 25, 10, "#FCBEA3", "#E88D9D");
 let plat3 = new Platform(680, 240, 25, 10, back, fill);
 let plat4 = new Platform(900, 260, 55, 10, back, fill);
 let plat5 = new Platform(1050, 220, 40, 10, "#E88D9D", "#C66A87");
-let plat6 = new Platform(1200, 170, 50, 10, "#E88D9D", "#C66A87")
+let plat6 = new Platform(1200, 170, 50, 10, "#FCBEA3", "#E88D9D")
 let house = new Platform(1700, 100, 200, 80, "yellow", "yellow")
 
 let platforms = []
@@ -351,7 +351,7 @@ function init(){
     plat3 = new Platform(680, 240, 25, 10, back, fill);
     plat4 = new Platform(900, 260, 55, 10, back, fill);
     plat5 = new Platform(1050, 220, 40, 10, "#E88D9D", "#C66A87");
-    plat6 = new Platform(1200, 170, 50, 10, "#E88D9D", "#C66A87")
+    plat6 = new Platform(1200, 170, 50, 10, "#FCBEA3", "#E88D9D")
     house = new Platform(1700, 100, 200, 80, "yellow", "yellow")
 
     platforms = []
@@ -433,20 +433,26 @@ function gameLoop() {
     }
     
     //movement and sprite swap logic
+
+    //right
     if (keys.right.pressed && fritz.x < 150){
         fritz.image.src = rightSprite;
         currentSprite = rightSprite
         fritz.velocity.x = 10;
+
+    //left
     } else if (keys.left.pressed && fritz.x > 50) {
         fritz.velocity.x = -10;
         fritz.image.src = leftSprite;
         currentSprite = leftSprite
+
+    //up    
     } else if (keys.up.pressed) {
         fritz.velocity.y = -10;
-        if(fritz.velocity.y < 0){
+        if(currentSprite == rightSprite){
             fritz.image.src = jumpRightSprite
             currentSprite = jumpRightSprite
-        }else if(fritz.velocity.y < 0){
+        }else if(currentSprite == leftSprite){
             fritz.image.src = jumpLeftSprite;
             currentSprite = jumpLeftSprite
         }
@@ -475,6 +481,13 @@ function gameLoop() {
             fritz.x + 10 <= platforms[i].x + platforms[i].width)
             {
                 fritz.velocity.y = 0; 
+                if(currentSprite == jumpLeftSprite){
+                    fritz.image.src = leftSprite
+                    currentSprite = leftSprite
+                }else if(currentSprite == jumpRightSprite){
+                    fritz.image.src = rightSprite
+                    currentSprite = rightSprite
+                }
         } else if (fritz.x < 0) {
             fritz.x = 0;
         } else if (fritz.y < 0) {
