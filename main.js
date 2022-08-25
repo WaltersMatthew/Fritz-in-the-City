@@ -319,6 +319,7 @@ function gameLoop() {
     //up    
     } else if (keys.up.pressed) {
         fritz.velocity.y = -15;
+        //jump sprite swap
         if(currentSprite == rightSprite){
             fritz.image.src = jumpRightSprite
             currentSprite = jumpRightSprite
@@ -350,6 +351,7 @@ function gameLoop() {
             fritz.x + 10 <= platforms[i].x + platforms[i].width)
             {
                 fritz.velocity.y = 0;
+                //jump sprite swaps on landing
                 if(currentSprite == jumpLeftSprite){
                     fritz.image.src = leftSprite
                     currentSprite = leftSprite
