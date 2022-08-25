@@ -82,9 +82,12 @@ class Platform {
     //draw platform func
     platRender(){
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-        ctx.lineWidth = 0.5;
+        ctx.lineWidth = 1;
         ctx.strokeStyle = "black"
-        ctx.strokeRect(this.x, this.y, this.width, this.height)
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.x + this.width, this.y)
+        ctx.stroke()
     }
     makeHouse() {
         //main square
