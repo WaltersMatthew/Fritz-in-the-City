@@ -173,7 +173,7 @@ class Platform {
 }
 //create fritz and buildings
 let fritz = new Fritz(25, 250, 65, 25, currentSprite, "image");
-let building1 = new Platform(0, 305, 300, canvas.height, fill, border);
+let building1 = new Platform(0, 305, 250, canvas.height, fill, border);
 let building2 = new Platform(520, 130, 50, 65, "#E78DA2", "#FCBEA3");
 let building3 = new Platform(744, 320, 89, canvas.height, fill, border);
 let building4 = new Platform(1400, 180, 500, canvas.height, fill, "#617659");
@@ -342,7 +342,7 @@ function init(){
     }
     //create fritz and buildings
     fritz = new Fritz(25, 250, 65, 25, currentSprite, "image");
-    building1 = new Platform(0, 305, 300, canvas.height, fill, border);
+    building1 = new Platform(0, 305, 250, canvas.height, fill, border);
     building2 = new Platform(520, 130, 50, 65, "#E78DA2", "#FCBEA3");
     building3 = new Platform(744, 320, 89, canvas.height, fill, border);
     building4 = new Platform(1400, 180, 500, canvas.height, fill, "#617659");
