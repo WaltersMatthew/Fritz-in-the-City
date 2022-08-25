@@ -63,30 +63,32 @@ class Fritz {
 }
 //class for platforms and buildings
 class Platform {
-    constructor(x, y, width, height, borderColor, fillColor) {
+    constructor(x, y, width, height, color, type) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.borderColor = borderColor;
-        this.fillColor = fillColor;
+        this.color = color;
+        this.type = type;
+        if (type == "image") {
+            this.image = new Image();
+            this.image.src = color;
         }
-    // makeBuilding(x, y, width, height)
-    makeBuilding() {
-        ctx.lineWidth = 5;
-        ctx.fillStyle = this.borderColor;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = this.fillColor;
-        //windows
-        ctx.fillRect(this.x + 5, this.y + 5, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 25, this.width - 10, 10);
-        ctx.fillRect(this.x + 5, this.y + 45, this.width - 10, 10);
     }
-    makePlat() {
-        ctx.strokeStyle = this.borderColor;
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = this.fillColor;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+    buildingRender(){
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "black"
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.x + this.width, this.y)
+        ctx.stroke()
+    }    
+    platRender(){
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = "black"
+        ctx.strokeRect(this.x, this.y, this.width, this.height)
     }
     makeHouse() {
         //main square
@@ -169,40 +171,24 @@ class Platform {
         //ball
         ctx.fillStyle = "hotpink";
         ctx.beginPath();
-        ctx.arc(this.x + 55, 172, 7, 0, 2 * Math.PI);
+        ctx.arc(this.x + 55, 173, 7, 0, 2 * Math.PI);
         ctx.fill();
     }
 }
-class Building {
-    constructor(x, y, width, height, src, type){
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.src = src;
-        this.type = type;
-        if (type == "image") {
-            this.image = new Image();
-            this.image.src = src;
-        }
-    }
-    buildingRender(){
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-    }
-}
+
 //create fritz and buildings
 let fritz = new Fritz(25, 250, 65, 25, currentSprite, "image");
-let building1 = new Building(0, 305, 250, canvas.height,"./img/building.png", "image");
-let building3 = new Building(744, 320, 89, canvas.height, "./img/building2.png", "image");
-let building5 = new Building(1550, 180, 350, canvas.height, "./img/building.png", "image");
-let building2 = new Platform(530, 110, 50, 65, "#E78DA2", "#FCBEA3");
-let building4 = new Platform(1350, 110, 50, 65, "#E78DA2", "#FCBEA3");
-let plat1 = new Platform(325, 240, 40, 10, back, fill);
-let plat2 = new Platform(450, 200, 25, 10, "#FCBEA3", "#E88D9D");
-let plat3 = new Platform(680, 240, 25, 10, back, fill);
-let plat4 = new Platform(900, 260, 55, 10, back, fill);
-let plat5 = new Platform(1050, 220, 40, 10, "#E88D9D", "#C66A87");
-let plat6 = new Platform(1200, 170, 50, 10, "#FCBEA3", "#E88D9D")
+let building1 = new Platform(0, 305, 250, canvas.height,"./img/building.png", "image");
+let building3 = new Platform(744, 320, 89, canvas.height, "./img/building2.png", "image");
+let building5 = new Platform(1550, 180, 350, canvas.height, "./img/building.png", "image");
+let building2 = new Platform(530, 110, 50, 65, "./img/building3.png", "image");
+let building4 = new Platform(1350, 110, 50, 65, "./img/building3.png", "image");
+let plat1 = new Platform(325, 240, 50, 10, "./img/lowPlat.png", "image");
+let plat2 = new Platform(440, 200, 45, 10, "./img/highPlat.png", "image");
+let plat3 = new Platform(650, 240, 45, 10, "./img/lowPlat.png", "image");
+let plat4 = new Platform(900, 260, 65, 10, "./img/lowPlat.png", "image");
+let plat5 = new Platform(1050, 220, 40, 10, "./img/highPlat.png", "image");
+let plat6 = new Platform(1200, 170, 50, 10, "./img/highestPlat.png", "image")
 let house = new Platform(1700, 100, 200, 80, "yellow", "yellow")
 
 let platforms = []
@@ -224,17 +210,17 @@ platforms.push(house)
 function reset(){
     //recreate fritz and buildings
     fritz = new Fritz(25, 250, 65, 25, currentSprite, "image");
-    building1 = new Building(0, 305, 250, canvas.height,"./img/building.png", "image");
-    building3 = new Building(744, 320, 89, canvas.height, "./img/building2.png", "image");
-    building5 = new Building(1550, 180, 350, canvas.height, "./img/building.png", "image");
-    building2 = new Platform(530, 110, 50, 65, "#E78DA2", "#FCBEA3");
-    building4 = new Platform(1350, 110, 50, 65, "#E78DA2", "#FCBEA3");
-    plat1 = new Platform(325, 240, 40, 10, back, fill);
-    plat2 = new Platform(450, 200, 25, 10, "#FCBEA3", "#E88D9D");
-    plat3 = new Platform(680, 240, 25, 10, back, fill);
-    plat4 = new Platform(900, 260, 55, 10, back, fill);
-    plat5 = new Platform(1050, 220, 40, 10, "#E88D9D", "#C66A87");
-    plat6 = new Platform(1200, 170, 50, 10, "#FCBEA3", "#E88D9D")
+    building1 = new Platform(0, 305, 250, canvas.height,"./img/building.png", "image");
+    building3 = new Platform(744, 320, 89, canvas.height, "./img/building2.png", "image");
+    building5 = new Platform(1550, 180, 350, canvas.height, "./img/building.png", "image");
+    building2 = new Platform(530, 110, 50, 65, "./img/building3.png", "image");
+    building4 = new Platform(1350, 110, 50, 65, "./img/building3.png", "image");
+    plat1 = new Platform(325, 240, 50, 10, "./img/lowPlat.png", "image");
+    plat2 = new Platform(440, 200, 45, 10, "./img/highPlat.png", "image");
+    plat3 = new Platform(650, 240, 45, 10, "./img/lowPlat.png", "image");
+    plat4 = new Platform(900, 260, 65, 10, "./img/lowPlat.png", "image");
+    plat5 = new Platform(1050, 220, 40, 10, "./img/highPlat.png", "image");
+    plat6 = new Platform(1200, 170, 50, 10, "./img/highestPlat.png", "image")
     house = new Platform(1700, 100, 200, 80, "yellow", "yellow")
 
     platforms = []
@@ -263,12 +249,10 @@ function respawn() {
     reset()
     scrollOffset = 0
     for (let i = 0; i < platforms.length; i++) {
-        if(i < 3){
-            platforms[i].buildingRender
-        }else if(i < 5){
-            platforms[i].makeBuilding()
+        if(i < 5){
+            platforms[i].buildingRender()
         }else if(i < 11){
-            platforms[i].makePlat()
+            platforms[i].platRender()
         }else{
             platforms[i].makeHouse()
         }
@@ -308,12 +292,10 @@ function gameLoop() {
     // background.renderBG()
     //render all platforms
     for (let i = 0; i < platforms.length; i++) {
-        if(i < 3){
+        if(i < 5){
             platforms[i].buildingRender()
-        }else if(i < 5){
-            platforms[i].makeBuilding()
         }else if (i < 11){
-            platforms[i].makePlat()
+            platforms[i].platRender()
         }else{
             platforms[i].makeHouse()
         }
