@@ -42,6 +42,7 @@ class Fritz {
             this.image.src = color;
         }
         this.alive = true;
+        this.jump = false
         this.velocity = {
             x: 0,
             y: 0,
@@ -187,7 +188,7 @@ let plat2 = new Platform(440, 200, 45, 10, "./img/highPlat.png", "image");
 let plat3 = new Platform(650, 240, 45, 10, "./img/lowPlat.png", "image");
 let plat4 = new Platform(900, 260, 65, 10, "./img/lowPlat.png", "image");
 let plat5 = new Platform(1050, 220, 40, 10, "./img/highPlat.png", "image");
-let plat6 = new Platform(1200, 170, 50, 10, "./img/highestPlat.png", "image")
+let plat6 = new Platform(1200, 170, 50, 10, "./img/highPlat.png", "image")
 let house = new Platform(1700, 100, 200, 80, "yellow", "yellow")
 
 //platforms array to loop for collision and rendering
@@ -209,32 +210,19 @@ platforms.push(house)
 function reset(){
     //recreate fritz and buildings
     fritz = new Fritz(25, 250, 65, 25, currentSprite, "image");
-    building1 = new Platform(0, 305, 250, canvas.height,"./img/building.png", "image");
-    building3 = new Platform(744, 320, 89, canvas.height, "./img/building2.png", "image");
-    building5 = new Platform(1550, 180, 350, canvas.height, "./img/building.png", "image");
-    building2 = new Platform(530, 110, 50, 65, "./img/building3.png", "image");
-    building4 = new Platform(1350, 110, 50, 65, "./img/building3.png", "image");
-    plat1 = new Platform(325, 240, 50, 10, "./img/lowPlat.png", "image");
-    plat2 = new Platform(440, 200, 45, 10, "./img/highPlat.png", "image");
-    plat3 = new Platform(650, 240, 45, 10, "./img/lowPlat.png", "image");
-    plat4 = new Platform(900, 260, 65, 10, "./img/lowPlat.png", "image");
-    plat5 = new Platform(1050, 220, 40, 10, "./img/highPlat.png", "image");
-    plat6 = new Platform(1200, 170, 50, 10, "./img/highestPlat.png", "image")
-    house = new Platform(1700, 100, 200, 80, "yellow", "yellow")
-    //empty array and re-push original coordinates
-    platforms = []
-    platforms.push(building1)
-    platforms.push(building3)
-    platforms.push(building5)
-    platforms.push(building2)
-    platforms.push(building4)
-    platforms.push(plat1)
-    platforms.push(plat2)
-    platforms.push(plat3)
-    platforms.push(plat4)
-    platforms.push(plat5)
-    platforms.push(plat6)
-    platforms.push(house)
+    building1.x = 0
+    building3.x = 744
+    building5.x = 1550
+    building2.x = 530
+    building4.x = 1350
+    plat1.x = 325
+    plat2.x = 440
+    plat3.x = 650
+    plat4.x = 900
+    plat5.x = 1050
+    plat6.x = 1200
+    house.x = 1700
+
 }
 //click window to play again
 document.addEventListener("click", () => {
@@ -242,11 +230,9 @@ document.addEventListener("click", () => {
     topText.innerText = "Get Fritz home to his favorite pink ball!";
     statusDisplay.innerText = "A = left, D = right, W = jump!";
 });
-//respawn function
-function respawn() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    reset()
-    //loop platforms array to render
+
+//draw platforms function
+function drawScene(){
     for (let i = 0; i < platforms.length; i++) {
         if(i < 5){
             platforms[i].buildingRender()
@@ -257,11 +243,17 @@ function respawn() {
         }
     }
 }
+//respawn function
+function respawn() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    reset()
+    drawScene()
+    fritz.alive = true
+}
 //endgame function
 function endGame() {
     fritz.alive = false;
     statusDisplay.innerText = "Oh no! Click anywhere to try again...";
-    console.log(":(");
 }
 //finish map win function
 function winner() {
@@ -286,19 +278,9 @@ const gameLoopInterval = setInterval(gameLoop, 60);
 function gameLoop() {
     //redraw canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //loop platforms array to render all platforms
-    for (let i = 0; i < platforms.length; i++) {
-        if(i < 5){
-            platforms[i].buildingRender()
-        }else if (i < 11){
-            platforms[i].platRender()
-        }else{
-            platforms[i].makeHouse()
-        }
-    }
- 
+    //render all platforms
+    drawScene()
     //movement and sprite swap logic
-
     //right
     if (keys.right.pressed && fritz.x < 150){
         fritz.image.src = rightSprite;
@@ -322,8 +304,7 @@ function gameLoop() {
             fritz.image.src = jumpLeftSprite;
             currentSprite = jumpLeftSprite
             }
-        }    
-    else {
+    }else {
         fritz.velocity.x = 0;
         for (let i = 0; i < platforms.length; i++) {
             if (keys.right.pressed){
@@ -334,8 +315,9 @@ function gameLoop() {
                 platforms[i].x += 10
             }
         }
-            
-     }
+    }   
+ 
+    
 
     //platform collision checks
     for (let i = 0; i < platforms.length; i++) {      
@@ -346,6 +328,7 @@ function gameLoop() {
             fritz.x + 10 <= platforms[i].x + platforms[i].width)
             {
                 fritz.velocity.y = 0;
+                fritz.jump = true
                 //jump sprite swaps on landing
                 if(currentSprite == jumpLeftSprite){
                     fritz.image.src = leftSprite
