@@ -4,6 +4,7 @@
 
 After a long day chasing squirrels, Fritz is lost in the city, and far from his cozy yellow home. Help him get back into bed by running and jumping your way through the city until you spot his little slice of heaven. Watch out for the gaps between buildings, you know doxies are afraid of heights!
 
+Play the game here: [Fritz in the City] (https://waltersmatthew.github.io/Fritz-in-the-City/) 
 ---
 # Tech Stack
 
