@@ -4,12 +4,10 @@
 
 After a long day chasing squirrels, Fritz is lost in the city, and far from his cozy yellow home. Help him get back into bed by running and jumping your way through the city until you spot his little slice of heaven. Watch out for the gaps between buildings, you know doxies are afraid of heights!
 
-Play the game here: [Fritz in the City](https://waltersmatthew.github.io/Fritz-in-the-City/)
-
 ---
 # Tech Stack
 
-    - HTML
+    - HTML 5
     - CSS
     - Javascript
     - Canvas 2D API
@@ -45,6 +43,15 @@ Play the game here: [Fritz in the City](https://waltersmatthew.github.io/Fritz-i
     - Implementing gravity✔️
     - Figuring out scroll functionality✔️
     - Updating from a single rectangle to sprite for movement✔️
+---
+# Reflections
+
+    - Learned a lot about canvas, implementing 2d graphics and using classes to create as many objects as needed
+    - Loops to add functionality on items inside an array
+    - Use functions to reduce repetitive code
+    - Need to do accessabiltiy reword on color schemes (pink on pink etc)
+    - Infinite jumps still unsolved. Tried Jumpcounter < 0 on keydown and if(velocity.y == 0) but will be working on other solutions
+
 ---
 ## Resources
 
